@@ -8,6 +8,13 @@ intents:
   - mood_great
   - mood_unhappy
   - bot_challenge
+  - ask_service_fees_hike
+  - report_network_issue
+  - inquire_services_offers
+  - request_human_agent  # For escalation
+  - thank_you
+  - negative_feedback   # To capture dissatisfaction
+
 
 responses:
   utter_greet:
@@ -20,6 +27,14 @@ responses:
   utter_did_that_help:
   - text: "Did that help you?"
 
+  utter_deny:
+  - text: "Okay."
+  - text: "Alright."
+
+  utter_bot_challenge:
+  - text: "I am a chatbot designed to assist you with common telecom queries. How can I help you today?"
+
+
   utter_happy:
   - text: "Great, carry on!"
 
@@ -29,6 +44,67 @@ responses:
   utter_iamabot:
   - text: "I am a bot, powered by Rasa."
 
+
+  utter_bot_challenge:
+  - text: "I am a chatbot designed to assist you with common telecom queries. How can I help you today?"
+
+  utter_ask_service_fees_hike:
+  - text: "I understand you're concerned about potential service fee increases. Could you please specify which service you are referring to (e.g., internet, mobile, TV)?"
+
+  utter_clarify_service_type_fees:
+  - text: "To help me understand better, are you asking about fees for your internet, mobile, or TV service?"
+
+  utter_explain_fees_hike:
+  - text: "Regarding service fees, [Your Telecom Company Name] regularly reviews pricing to ensure we can continue providing high-quality services and invest in network infrastructure. Fee adjustments are sometimes necessary. Could you please provide your account details so I can check for specific information related to your account?" # More detailed answer based on backend integration would be ideal.
+
+  utter_report_network_issue:
+  - text: "I'm sorry to hear you're experiencing network issues. Could you please tell me more about the problem? For example, is it related to your internet, mobile, or TV service? And what kind of issue are you facing (e.g., slow speed, no signal, intermittent connection)?"
+
+  utter_clarify_issue_details:
+  - text: "Could you please specify the type of service (internet, mobile, TV) and the nature of the issue you are experiencing (e.g., slow speed, no signal)?"
+
+  utter_ask_location_issue:
+  - text: "To help troubleshoot, could you please tell me your general location or area where you are experiencing the issue?"
+
+  utter_network_issue_reported:
+  - text: "Thank you for reporting the network issue. We are logging this and will investigate.  For immediate troubleshooting steps, you can try restarting your modem/router or device. If the issue persists, please provide your account details so we can investigate further and escalate if needed." # Link to self-help articles or FAQs could be added here
+
+  utter_inquire_services_offers:
+  - text: "We have a range of services and offers! Are you interested in services for home, mobile, or both? Or are you looking for specific types of offers, like data, voice, or bundles?"
+
+  utter_list_services:
+  - text: "We offer a variety of services including: High-speed internet, Mobile plans with various data and voice options, and Digital TV packages.  Which service are you most interested in learning more about?" # Could link to service pages
+
+  utter_list_offers:
+  - text: "Currently, we have exciting offers on [mention current key offers, e.g., data boosters, new customer discounts, bundle deals]. Are you interested in offers for internet, mobile, or both?" # Could link to offers page or personalize based on user context
+
+  utter_request_human_agent:
+  - text: "I understand you'd like to speak to a human agent. Please wait while I connect you to our customer service team. This might take a few moments." # Integration with handover system needed for this to work effectively
+
+  utter_thank_you:
+  - text: "You're welcome! Is there anything else I can assist you with today?"
+  - text: "Glad I could help!"
+
+  utter_negative_feedback:
+  - text: "I'm sorry to hear you're not satisfied. Could you please tell me more about what went wrong so we can improve?" # Collect feedback for improvement
+
+  utter_default:
+  - text: "I'm sorry, I didn't understand that. Could you please rephrase your question?"
+  - text: "Could you please say that in a different way?"
+
+
+session_config:
+  carry_over_slots_to_new_session: true
+  session_expiration_time: 60 # minutes
+
+entities:
+  - service_type   # e.g., internet, mobile, TV
+  - issue_type     # e.g., slow speed, no signal, billing issue
+  - offer_type     # e.g., data, voice, bundle
+  - location       # e.g., city, area
+  
+actions:
+  - action_default_fallback # Rasa's default fallback action for handling out-of-scope intents
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
