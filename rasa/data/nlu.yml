@@ -89,3 +89,125 @@ nlu:
     - are you a human?
     - am I talking to a bot?
     - am I talking to a human?
+
+- intent: ask_service_fees_hike
+  examples: |
+    - are service fees increasing?
+    - is there a price hike?
+    - are you raising prices?
+    - why is my bill higher?
+    - fee increase?
+    - price going up?
+    - cost increase?
+    - what about the price hike?
+    - I heard about service fee hikes
+    - are there any changes in service fees?
+
+- intent: report_network_issue
+  examples: |
+    - my internet is not working
+    - network down
+    - no internet connection
+    - mobile data is slow
+    - poor signal
+    - internet speed is very slow
+    - I have no service
+    - my wifi is down
+    - trouble with internet
+    - network problem
+    - facing network issues
+    - internet isn't working properly
+    - mobile network is bad
+
+- intent: inquire_services_offers
+  examples: |
+    - what services do you offer?
+    - tell me about your services
+    - what kind of services do you have?
+    - any offers available?
+    - current promotions?
+    - what offers are you running?
+    - show me your offers
+    - what deals do you have?
+    - any special offers for new customers?
+    - what services are available in my area?
+    - tell me about mobile plans
+    - internet plans
+    - TV packages
+
+- intent: request_human_agent
+  examples: |
+    - I want to talk to a human
+    - connect me to an agent
+    - speak to a representative
+    - talk to customer service
+    - I need to speak to someone
+    - can I talk to a person?
+    - get me a human
+    - transfer to human agent
+    - I need more help from a real person
+
+- intent: thank_you
+  examples: |
+    - thanks
+    - thank you
+    - thanks a lot
+    - appreciate it
+    - thank you so much
+    - that's helpful
+    - great thanks
+
+- intent: negative_feedback
+  examples: |
+    - this is terrible service
+    - I am not happy
+    - very disappointed
+    - this is frustrating
+    - I am very unsatisfied
+    - bad experience
+    - this is not good
+    - your service is awful
+
+- intent: inform_service_type
+  examples: |
+    - internet
+    - mobile
+    - TV
+    - my internet service
+    - my mobile plan
+    - my TV connection
+    - it's about my internet
+    - for my mobile
+
+- intent: inform_issue_type
+  examples: |
+    - slow speed
+    - no signal
+    - intermittent connection
+    - billing issue
+    - cannot connect
+    - dropped calls
+    - buffering problems
+    - no data
+    - poor reception
+
+- intent: inform_location
+  examples: |
+    - in [City Name]
+    - [Area Name] area
+    - around [Landmark]
+    - [Zip Code]
+    - near [Street Name]
+    - I am in [State Name]
+    - [Country Name]
+
+- intent: inform_offer_type
+  examples: |
+    - data offers
+    - voice offers
+    - bundle deals
+    - internet offers
+    - mobile offers
+    - TV offers
+    - new customer offers
+    - upgrade offers
