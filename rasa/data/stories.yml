@@ -28,114 +28,127 @@ stories:
   - action: utter_did_that_help
   - intent: deny
   - action: utter_goodbye
-
-- story: Ask about service fees hike - initial question
+- story: slow internet issue
   steps:
-  - intent: ask_service_fees_hike
-  - action: utter_ask_service_fees_hike
-  - intent: inform_service_type  # User specifies service type
-  - entities:
-      - service_type: internet  # Example entity extraction
-  - action: utter_explain_fees_hike # Provide general explanation, ideally with backend integration for account specific info
+      - intent: greet
+      - action: utter_greet
+      - intent: slow_internet
+      - action: utter_slow_internet
+      - intent: affirm
+      - action: utter_goodbye
 
-- story: Ask about service fees hike - clarify service type
+- story: bill inquiry path
   steps:
-  - intent: ask_service_fees_hike
-  - action: utter_ask_service_fees_hike
-  - intent: deny # User doesn't specify service type immediately
-  - action: utter_clarify_service_type_fees
-  - intent: inform_service_type
-  - entities:
-      - service_type: mobile
-  - action: utter_explain_fees_hike
+      - intent: greet
+      - action: utter_greet
+      - intent: bill_inquiry
+      - action: utter_bill_inquiry
+      - intent: goodbye
+      - action: utter_goodbye
 
-- story: Report network issue - happy path
+- story: price increase inquiry
   steps:
-  - intent: report_network_issue
-  - action: utter_report_network_issue
-  - intent: inform_service_type # User specifies service type
-  - entities:
-      - service_type: internet
-  - intent: inform_issue_type # User specifies issue type
-  - entities:
-      - issue_type: slow speed
-  - action: utter_ask_location_issue # Ask for location for troubleshooting
-  - intent: inform_location
-  - entities:
-      - location: [City Name]
-  - action: utter_network_issue_reported # Acknowledge report and suggest actions
+      - intent: greet
+      - action: utter_greet
+      - intent: price_increase
+      - action: utter_price_increase
+      - intent: current_offers
+      - action: utter_current_offers
+      - intent: affirm
+      - action: utter_goodbye
 
-- story: Report network issue - clarify service and issue
+- story: check current offers
   steps:
-  - intent: report_network_issue
-  - action: utter_report_network_issue
-  - intent: deny # User doesn't provide details initially
-  - action: utter_clarify_issue_details
-  - intent: inform_service_type
-  - entities:
-      - service_type: mobile
-  - intent: inform_issue_type
-  - entities:
-      - issue_type: no signal
-  - action: utter_ask_location_issue
-  - intent: inform_location
-  - entities:
-      - location: [Area Name]
-  - action: utter_network_issue_reported
+      - intent: greet
+      - action: utter_greet
+      - intent: current_offers
+      - action: utter_current_offers
+      - intent: goodbye
+      - action: utter_goodbye
 
-- story: Inquire about services and offers - general inquiry
+- story: data usage check
   steps:
-  - intent: inquire_services_offers
-  - action: utter_inquire_services_offers
-  - intent: affirm # User is generally interested
-  - action: utter_list_services # List general services
-  - intent: goodbye
-  - action: utter_goodbye
+      - intent: greet
+      - action: utter_greet
+      - intent: data_usage
+      - action: utter_data_usage
+      - intent: goodbye
+      - action: utter_goodbye
 
-- story: Inquire about offers - specific offer type
+- story: account management request
   steps:
-  - intent: inquire_services_offers
-  - action: utter_inquire_services_offers
-  - intent: inform_offer_type # User specifies offer type
-  - entities:
-      - offer_type: data offers
-  - action: utter_list_offers # List relevant offers
-  - intent: thank_you
-  - action: utter_thank_you
+      - intent: greet
+      - action: utter_greet
+      - intent: account_management
+      - action: utter_account_management
+      - intent: affirm
+      - action: utter_goodbye
 
-- story: Request human agent
+- story: service outage inquiry
   steps:
-  - intent: request_human_agent
-  - action: utter_request_human_agent
-  # In a real system, you would have an action here to actually trigger human handover
+      - intent: greet
+      - action: utter_greet
+      - intent: service_outage
+      - action: utter_service_outage
+      - intent: goodbye
+      - action: utter_goodbye
 
-- story: Handle negative feedback
+- story: roaming information request
   steps:
-  - intent: negative_feedback
-  - action: utter_negative_feedback
-  - intent: goodbye
-  - action: utter_goodbye
+      - intent: greet
+      - action: utter_greet
+      - intent: roaming_inquiry
+      - action: utter_roaming_inquiry
+      - intent: affirm
+      - action: utter_goodbye
 
-- story: Fallback handling
+- story: technical support request
   steps:
-  - intent: nlu_fallback # Rasa's default fallback intent
-  - action: action_default_fallback
-  - action: utter_default # Provide a general "didn't understand" message
-  - intent: goodbye
-  - action: utter_goodbye
+      - intent: greet
+      - action: utter_greet
+      - intent: tech_support
+      - action: utter_tech_support
+      - intent: slow_internet
+      - action: utter_slow_internet
+      - intent: goodbye
+      - action: utter_goodbye
 
-- story: Thank you flow
+- story: complaint submission
   steps:
-  - intent: thank_you
-  - action: utter_thank_you
-  - intent: goodbye
-  - action: utter_goodbye
+      - intent: greet
+      - action: utter_greet
+      - intent: complaint
+      - action: utter_complaint
+      - intent: goodbye
+      - action: utter_goodbye
 
-- story: Bot challenge flow
+- story: cancellation request with retention
   steps:
-  - intent: bot_challenge
-  - action: utter_bot_challenge
-  - intent: greet # User might greet again after bot challenge
-  - action: utter_greet
-  - intent: goodbye
-  - action: utter_goodbye
+      - intent: greet
+      - action: utter_greet
+      - intent: cancel_service
+      - action: utter_cancel_service
+      - intent: current_offers
+      - action: utter_current_offers
+      - intent: affirm
+      - action: utter_goodbye
+
+- story: cancellation request proceeding
+  steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: cancel_service
+      - action: utter_cancel_service
+      - intent: deny
+      - action: utter_goodbye
+
+- story: multiple issues - slow internet and bill
+  steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: slow_internet
+      - action: utter_slow_internet
+      - intent: bill_inquiry
+      - action: utter_bill_inquiry
+      - intent: goodbye
+      - action: utter_goodbye

@@ -1,0 +1,17 @@
+{
+  "0": "account_management",
+  "1": "affirm",
+  "2": "bill_inquiry",
+  "3": "cancel_service",
+  "4": "complaint",
+  "5": "current_offers",
+  "6": "data_usage",
+  "7": "deny",
+  "8": "goodbye",
+  "9": "greet",
+  "10": "price_increase",
+  "11": "roaming_inquiry",
+  "12": "service_outage",
+  "13": "slow_internet",
+  "14": "tech_support"
+}

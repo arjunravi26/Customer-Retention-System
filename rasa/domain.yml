@@ -8,13 +8,17 @@ intents:
   - mood_great
   - mood_unhappy
   - bot_challenge
-  - ask_service_fees_hike
-  - report_network_issue
-  - inquire_services_offers
-  - request_human_agent  # For escalation
-  - thank_you
-  - negative_feedback   # To capture dissatisfaction
-
+  - slow_internet
+  - bill_inquiry
+  - price_increase
+  - current_offers
+  - data_usage
+  - account_management
+  - service_outage
+  - roaming_inquiry
+  - tech_support
+  - complaint
+  - cancel_service
 
 responses:
   utter_greet:
@@ -27,14 +31,6 @@ responses:
   utter_did_that_help:
   - text: "Did that help you?"
 
-  utter_deny:
-  - text: "Okay."
-  - text: "Alright."
-
-  utter_bot_challenge:
-  - text: "I am a chatbot designed to assist you with common telecom queries. How can I help you today?"
-
-
   utter_happy:
   - text: "Great, carry on!"
 
@@ -44,67 +40,67 @@ responses:
   utter_iamabot:
   - text: "I am a bot, powered by Rasa."
 
+  utter_slow_internet:
+    - text: "I'm sorry you're experiencing slow internet. Let's troubleshoot this. Have you tried restarting your router? If that doesn't help, I can run a remote diagnostic on your line or schedule a technician visit."
+    - text: "Slow internet can be frustrating. Let me check if there are any known issues in your area. Could you confirm your address or account number?"
+    - text: "I understand having slow internet is inconvenient. Let's check your current speed and compare it with your plan. Please run a speed test at speedtest.net and share the results with me."
 
-  utter_bot_challenge:
-  - text: "I am a chatbot designed to assist you with common telecom queries. How can I help you today?"
+  utter_bill_inquiry:
+    - text: "I understand your concern about your bill. Let me look into the details. Could you provide your account number or the phone number associated with your account?"
+    - text: "I'll help clarify the charges on your bill. To access your account details, I'll need either your account number or the phone number registered with us."
+    - text: "Let me help you understand your bill better. I can break down all charges if you provide your account details. Is there a specific item on the bill you're questioning?"
 
-  utter_ask_service_fees_hike:
-  - text: "I understand you're concerned about potential service fee increases. Could you please specify which service you are referring to (e.g., internet, mobile, TV)?"
+  utter_price_increase:
+    - text: "I understand your concern about the price increase. This adjustment is part of our periodic review of service costs and market conditions. If you'd like, I can check if there's a more suitable plan for your usage patterns."
+    - text: "Price adjustments are typically communicated via email or SMS. Let me check if there were any notifications sent to you and explain the reasons behind the change."
+    - text: "Thank you for bringing this up. Price adjustments occur periodically due to increased operational costs and network improvements. I'd be happy to review your usage patterns and suggest a plan that might better suit your needs."
 
-  utter_clarify_service_type_fees:
-  - text: "To help me understand better, are you asking about fees for your internet, mobile, or TV service?"
+  utter_current_offers:
+    - text: "We have several exciting offers available! Currently, we're offering 50% extra data on all recharges above $30, a family plan with shared data at 20% discount, and a special weekend unlimited data package. Would you like more details on any of these?"
+    - text: "Our current promotions include unlimited weekend calling for $5/month, double data on premium plans, and discounted international calling packages. Based on your usage, I can recommend the best option for you."
+    - text: "We have great seasonal offers this month! This includes upgraded speeds at no extra cost for 3 months, bundle discounts when you combine mobile and home internet, and loyalty rewards for customers of 2+ years. Would you like to know which offers you're eligible for?"
 
-  utter_explain_fees_hike:
-  - text: "Regarding service fees, [Your Telecom Company Name] regularly reviews pricing to ensure we can continue providing high-quality services and invest in network infrastructure. Fee adjustments are sometimes necessary. Could you please provide your account details so I can check for specific information related to your account?" # More detailed answer based on backend integration would be ideal.
+  utter_data_usage:
+    - text: "I can check your current data usage for you. To access this information, I need your account number or registered phone number. Would you like to provide that?"
+    - text: "Let me help you track your data consumption. Could you share your account details so I can access this information for you?"
+    - text: "Unexpected data consumption can happen due to background apps, automatic updates, or video streaming. I can check your usage patterns if you provide your account details, and offer tips to manage your data more effectively."
 
-  utter_report_network_issue:
-  - text: "I'm sorry to hear you're experiencing network issues. Could you please tell me more about the problem? For example, is it related to your internet, mobile, or TV service? And what kind of issue are you facing (e.g., slow speed, no signal, intermittent connection)?"
+  utter_account_management:
+    - text: "I'd be happy to help you update your account information. What specific details would you like to change? For security purposes, I'll need to verify your identity first."
+    - text: "You can manage most account settings through our mobile app or website. Would you like me to guide you through the process, or would you prefer me to make the changes for you after identity verification?"
+    - text: "Certainly! I can help you manage your account. For security reasons, I'll need to verify your identity with a one-time password sent to your registered mobile number. Is that okay?"
 
-  utter_clarify_issue_details:
-  - text: "Could you please specify the type of service (internet, mobile, TV) and the nature of the issue you are experiencing (e.g., slow speed, no signal)?"
+  utter_service_outage:
+    - text: "I apologize for any service disruption. Let me check if there are any reported outages in your area. Could you please confirm your location or postal code?"
+    - text: "I understand how frustrating service interruptions can be. I'll check our system for any known issues in your area. Could you please provide your address or postal code?"
+    - text: "Thank you for reporting this. Let me check if we have any ongoing maintenance or known issues affecting your area. Could you confirm your location so I can provide you with accurate information?"
 
-  utter_ask_location_issue:
-  - text: "To help troubleshoot, could you please tell me your general location or area where you are experiencing the issue?"
+  utter_roaming_inquiry:
+    - text: "For international roaming, we offer several packages depending on your destination. Our most popular is the Global Traveler package at $10/day for unlimited calls, texts, and 1GB data. Where are you planning to travel?"
+    - text: "International roaming rates vary by country. We offer daily passes and country-specific packages that can save you money compared to standard roaming rates. Which country will you be visiting?"
+    - text: "I can help you with roaming options. We recommend activating an international package before traveling to avoid high charges. Where are you traveling to, and for how long? This will help me suggest the best option."
 
-  utter_network_issue_reported:
-  - text: "Thank you for reporting the network issue. We are logging this and will investigate.  For immediate troubleshooting steps, you can try restarting your modem/router or device. If the issue persists, please provide your account details so we can investigate further and escalate if needed." # Link to self-help articles or FAQs could be added here
+  utter_tech_support:
+    - text: "I'm sorry you're experiencing technical difficulties. Let's troubleshoot together. Could you provide more details about the issue you're facing?"
+    - text: "I'd be happy to help with technical support. To better assist you, could you describe the problem in more detail? When did it start, and have you tried any solutions already?"
+    - text: "For technical issues, I'm here to help. Let's start with some basic troubleshooting. Have you tried restarting your device? If yes, please describe exactly what happens when you try to use our service."
 
-  utter_inquire_services_offers:
-  - text: "We have a range of services and offers! Are you interested in services for home, mobile, or both? Or are you looking for specific types of offers, like data, voice, or bundles?"
+  utter_complaint:
+    - text: "I'm very sorry to hear about your negative experience. Your feedback is important to us. I'd like to document your complaint and escalate it to the appropriate department. Could you provide more details about your concern?"
+    - text: "I apologize for your unsatisfactory experience. I'll ensure your complaint is properly addressed. Could you share more details so I can document this accurately and forward it to our resolution team?"
+    - text: "Thank you for bringing this to our attention. We take all complaints seriously. I'll register your complaint and a senior customer service representative will contact you within 24 hours. Could you please elaborate on the issue?"
 
-  utter_list_services:
-  - text: "We offer a variety of services including: High-speed internet, Mobile plans with various data and voice options, and Digital TV packages.  Which service are you most interested in learning more about?" # Could link to service pages
-
-  utter_list_offers:
-  - text: "Currently, we have exciting offers on [mention current key offers, e.g., data boosters, new customer discounts, bundle deals]. Are you interested in offers for internet, mobile, or both?" # Could link to offers page or personalize based on user context
-
-  utter_request_human_agent:
-  - text: "I understand you'd like to speak to a human agent. Please wait while I connect you to our customer service team. This might take a few moments." # Integration with handover system needed for this to work effectively
-
-  utter_thank_you:
-  - text: "You're welcome! Is there anything else I can assist you with today?"
-  - text: "Glad I could help!"
-
-  utter_negative_feedback:
-  - text: "I'm sorry to hear you're not satisfied. Could you please tell me more about what went wrong so we can improve?" # Collect feedback for improvement
+  utter_cancel_service:
+    - text: "I'm sorry to hear you want to cancel your service. We'd hate to see you go. Before proceeding, may I ask the reason for cancellation? Perhaps I can offer a solution or a better plan that addresses your concerns."
+    - text: "I understand you're considering cancellation. Before we proceed, I'd like to see if there's anything we can do to resolve any issues you're experiencing. What's prompting you to cancel?"
+    - text: "I can help you with the cancellation process. However, based on your account history, you may be eligible for special retention offers. Would you like to hear about these before we proceed with cancellation?"
 
   utter_default:
-  - text: "I'm sorry, I didn't understand that. Could you please rephrase your question?"
-  - text: "Could you please say that in a different way?"
+    - text: "I'm not sure I understand. Could you rephrase your question or select from our common support topics?"
+    - text: "I didn't quite catch that. Could you please try asking in a different way or let me know which service area you need help with?"
+    - text: "I'm still learning and didn't understand your request. Could you provide more details or try asking in a different way?"
 
 
-session_config:
-  carry_over_slots_to_new_session: true
-  session_expiration_time: 60 # minutes
-
-entities:
-  - service_type   # e.g., internet, mobile, TV
-  - issue_type     # e.g., slow speed, no signal, billing issue
-  - offer_type     # e.g., data, voice, bundle
-  - location       # e.g., city, area
-  
-actions:
-  - action_default_fallback # Rasa's default fallback action for handling out-of-scope intents
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true

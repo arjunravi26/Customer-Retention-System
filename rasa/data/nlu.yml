@@ -89,125 +89,154 @@ nlu:
     - are you a human?
     - am I talking to a bot?
     - am I talking to a human?
-
-- intent: ask_service_fees_hike
+- intent: slow_internet
   examples: |
-    - are service fees increasing?
-    - is there a price hike?
-    - are you raising prices?
-    - why is my bill higher?
-    - fee increase?
-    - price going up?
-    - cost increase?
-    - what about the price hike?
-    - I heard about service fee hikes
-    - are there any changes in service fees?
+      - my internet is slow
+      - internet speed is terrible
+      - wifi is not working properly
+      - connection keeps dropping
+      - my broadband is slow
+      - speed test shows low speeds
+      - internet is lagging
+      - can't stream videos properly
+      - download speed is very slow
+      - my internet connection feels slow
+      - buffering issues with my internet
+      - internet not working at full speed
+      - experiencing slow speeds on my network
 
-- intent: report_network_issue
+- intent: bill_inquiry
   examples: |
-    - my internet is not working
-    - network down
-    - no internet connection
-    - mobile data is slow
-    - poor signal
-    - internet speed is very slow
-    - I have no service
-    - my wifi is down
-    - trouble with internet
-    - network problem
-    - facing network issues
-    - internet isn't working properly
-    - mobile network is bad
+      - why is my bill so high
+      - my bill is incorrect
+      - there's a mistake in my bill
+      - I don't understand my bill
+      - explain my latest invoice
+      - bill amount is more than usual
+      - unexpected charges on my bill
+      - why did my bill increase
+      - was I overcharged this month
+      - my last bill seems wrong
+      - questioning the amount on my bill
+      - bill higher than my plan
 
-- intent: inquire_services_offers
+- intent: price_increase
   examples: |
-    - what services do you offer?
-    - tell me about your services
-    - what kind of services do you have?
-    - any offers available?
-    - current promotions?
-    - what offers are you running?
-    - show me your offers
-    - what deals do you have?
-    - any special offers for new customers?
-    - what services are available in my area?
-    - tell me about mobile plans
-    - internet plans
-    - TV packages
+      - why did you increase the price
+      - service fee hike notification
+      - plan costs went up
+      - why am I paying more now
+      - price increase reason
+      - explanation for fee increase
+      - tariff increase without notice
+      - rate hike on my service
+      - sudden increase in monthly charges
+      - prices went up without warning
+      - why is my subscription more expensive now
 
-- intent: request_human_agent
+- intent: current_offers
   examples: |
-    - I want to talk to a human
-    - connect me to an agent
-    - speak to a representative
-    - talk to customer service
-    - I need to speak to someone
-    - can I talk to a person?
-    - get me a human
-    - transfer to human agent
-    - I need more help from a real person
+      - what offers do you have
+      - any special deals available
+      - current promotions
+      - best plan for me
+      - deals on data plans
+      - any discounts available
+      - promotional prices
+      - special offers for existing customers
+      - tell me about your best deals
+      - cheap data plans
+      - family plan offers
+      - unlimited data deals
+      - any seasonal offers right now
 
-- intent: thank_you
+- intent: data_usage
   examples: |
-    - thanks
-    - thank you
-    - thanks a lot
-    - appreciate it
-    - thank you so much
-    - that's helpful
-    - great thanks
+      - how much data have I used
+      - check my remaining data
+      - data balance inquiry
+      - running out of data too quickly
+      - track my data usage
+      - how many GB do I have left
+      - unexpected data consumption
+      - data finished before month end
+      - data usage details
+      - why did my data run out so fast
 
-- intent: negative_feedback
+- intent: account_management
   examples: |
-    - this is terrible service
-    - I am not happy
-    - very disappointed
-    - this is frustrating
-    - I am very unsatisfied
-    - bad experience
-    - this is not good
-    - your service is awful
+      - update my personal information
+      - change my address
+      - update payment method
+      - change account settings
+      - reset password
+      - change account email
+      - update contact information
+      - add authorized user to account
+      - modify account details
+      - change my plan
 
-- intent: inform_service_type
+- intent: service_outage
   examples: |
-    - internet
-    - mobile
-    - TV
-    - my internet service
-    - my mobile plan
-    - my TV connection
-    - it's about my internet
-    - for my mobile
+      - is there a service outage
+      - network down in my area
+      - service not working
+      - no signal on my phone
+      - network issues in my location
+      - coverage problems
+      - service disruption
+      - outage in my neighborhood
+      - no connectivity in my area
+      - when will service be restored
 
-- intent: inform_issue_type
+- intent: roaming_inquiry
   examples: |
-    - slow speed
-    - no signal
-    - intermittent connection
-    - billing issue
-    - cannot connect
-    - dropped calls
-    - buffering problems
-    - no data
-    - poor reception
+      - roaming charges abroad
+      - using my phone overseas
+      - international data plans
+      - how much for calls when traveling
+      - activate roaming service
+      - costs for using phone in other countries
+      - roaming plans for Europe
+      - international usage fees
+      - traveling soon, need roaming info
+      - data roaming options
 
-- intent: inform_location
+- intent: tech_support
   examples: |
-    - in [City Name]
-    - [Area Name] area
-    - around [Landmark]
-    - [Zip Code]
-    - near [Street Name]
-    - I am in [State Name]
-    - [Country Name]
+      - need technical support
+      - router configuration help
+      - can't connect to wifi
+      - device connection problems
+      - trouble with mobile app
+      - help setting up email
+      - technical assistance needed
+      - setup help required
+      - device troubleshooting
+      - connection problem with new device
 
-- intent: inform_offer_type
+- intent: complaint
   examples: |
-    - data offers
-    - voice offers
-    - bundle deals
-    - internet offers
-    - mobile offers
-    - TV offers
-    - new customer offers
-    - upgrade offers
+      - I want to file a complaint
+      - poor service quality
+      - unhappy with customer support
+      - not satisfied with resolution
+      - service disappointment
+      - complaint about staff behavior
+      - unsatisfactory experience
+      - formal complaint submission
+      - dissatisfied with service
+      - want to speak to a manager
+
+- intent: cancel_service
+  examples: |
+      - want to cancel my service
+      - how to terminate contract
+      - cancel my subscription
+      - end my agreement
+      - stop my service
+      - cancellation procedure
+      - leave your service
+      - terminate my account
+      - discontinue service
+      - how to close my account
