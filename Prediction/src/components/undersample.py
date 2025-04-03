@@ -24,6 +24,7 @@ class Undersampler(BaseEstimator):
             eps (float): DBSCAN eps parameter for clustering dense points (default=0.5).
             min_samples (int): DBSCAN min_samples parameter (default=2).
         """
+        logging.info(f"Under Sampler Initalizied.")
         self.k = k
         self.percentile = percentile
         self.eps = eps
@@ -75,6 +76,7 @@ class Undersampler(BaseEstimator):
 
             logging.info(f"Reduced majority class to {len(X_majority_reduced)} samples.")
             logging.info(f"Final dataset size: {len(X_reduced)} samples.")
+            logging.info(f"Under Sampling finished.")
 
             return X_reduced,y_reduced
         except Exception as e:
