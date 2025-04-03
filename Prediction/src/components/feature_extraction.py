@@ -8,6 +8,7 @@ import io
 
 class FeatureExtraction(BaseEstimator, TransformerMixin):
     def __init__(self, config_path: str):
+        logging.info(f"Feature Extraction Initialized.")
         self.logger = logging
         self.config_path = config_path
         try:
@@ -29,6 +30,7 @@ class FeatureExtraction(BaseEstimator, TransformerMixin):
             numerical_cols (list): List of numerical column names.
         """
         try:
+            logging.info(f"Feature Extraction update config.")
             if 'categorical_features' not in self.config:
                 self.config['categorical_features'] = categorical_cols
             if 'numerical_features' not in self.config:
@@ -36,11 +38,13 @@ class FeatureExtraction(BaseEstimator, TransformerMixin):
 
             with open(self.config_path, 'w') as file:
                 yaml.safe_dump(self.config, file)
+            logging.info(f"update config ended.")
         except Exception as e:
             raise RuntimeError(
                 f"Failed to update config.yaml with feature list: {str(e)}")
     def fit(self, X: pd.DataFrame, y=None):
         """Fit method for pipeline compatibility (no-op)."""
+        logging.info(f"Feature Extraction fit.")
         return self
 
     def transform(self,X: pd.DataFrame) -> pd.DataFrame:
@@ -53,6 +57,7 @@ class FeatureExtraction(BaseEstimator, TransformerMixin):
         """
         # selected_features = X.drop(self.cols_to_remove, axis=1)
         try:
+            logging.info(f"Feature Extraction transform started..")
             invalid_cols = [
                 col for col in self.cols_to_remove if col not in X.columns]
             if invalid_cols:
@@ -74,6 +79,7 @@ class FeatureExtraction(BaseEstimator, TransformerMixin):
             self._update_config(categorical_cols, numerical_cols)
             if self.selected_data_path:
                 filtered_data.to_excel(self.selected_data_path, index=False)
+            logging.info(f"Feature Extraction transform ended.")
             return filtered_data
         except Exception as e:
             raise RuntimeError(f"Error in feature extraction: {str(e)}")
