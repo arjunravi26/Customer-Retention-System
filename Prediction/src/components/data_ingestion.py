@@ -19,6 +19,7 @@ class DataLoader(BaseEstimator, TransformerMixin):
             config_path (str): Path to the YAML configuration file.
         """
         self.config_path = config_path
+        logging.info(f"Data Loader Initialized")
         try:
             with open(self.config_path, 'r') as file:
                 self.config: Dict[str, Any] = yaml.safe_load(file)
@@ -36,6 +37,7 @@ class DataLoader(BaseEstimator, TransformerMixin):
         Args:
             columns (list): List of column names from the dataset.
         """
+        logging.info(f"Data loader update config started..")
         try:
             if 'columns' not in self.config:
                 self.config['columns'] = columns
@@ -52,6 +54,7 @@ class DataLoader(BaseEstimator, TransformerMixin):
 
     def validate_file(self) -> None:
         """Validate that the data file exists and is accessible."""
+        logging.info(f"Data Loader validate file started..")
         if not self.file_path:
             raise ValueError("Data file path not specified in configuration.")
         if not os.path.exists(self.file_path):
@@ -59,9 +62,11 @@ class DataLoader(BaseEstimator, TransformerMixin):
         if not os.access(self.file_path, os.R_OK):
             raise PermissionError(
                 f"No read permission for file {self.file_path}")
+        logging.info(f"Validation successful")
 
     def fit(self, X=None, y=None):
         """Fit method for pipeline compatibility (no-op)."""
+        logging.info("Data loader fit.")
         return self
 
     def transform(self,X:pd.DataFrame) -> pd.DataFrame:
@@ -71,6 +76,7 @@ class DataLoader(BaseEstimator, TransformerMixin):
         Returns:
             pd.DataFrame: The loaded dataset.
         """
+        logging.info(f"Data loader transform started")
         try:
             self.validate_file()
             data = pd.read_excel(self.file_path)
@@ -82,7 +88,7 @@ class DataLoader(BaseEstimator, TransformerMixin):
             if data.duplicated().any():
                 logging.warning(
                     "Dataset contains %d duplicate rows. Consider deduplication.", data.duplicated().sum())
-
+            logging.info("Data Loader transformation completed.")
             return data
         except pd.errors.EmptyDataError:
             logging.error("Data file %s is empty or corrupted.",
