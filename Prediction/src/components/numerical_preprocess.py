@@ -22,6 +22,7 @@ class NumericalPreprocessor(BaseEstimator, TransformerMixin):
         Args:
             config_path (str): Path to the YAML configuration file.
         """
+        logging.info(f"Numerical Preprocessor Initialized.")
         self.config_path = config_path
         try:
             with open(config_path, 'r') as file:
@@ -42,6 +43,7 @@ class NumericalPreprocessor(BaseEstimator, TransformerMixin):
 
     def _handle_empty_total_charges(self, X: pd.DataFrame):
         try:
+            logging.info(f"Handle empty total charges.")
             if 'Total Charges' in X.columns:
                 mask = X['Total Charges'].apply(
                     lambda x: isinstance(x, (int, float)))
@@ -66,6 +68,7 @@ class NumericalPreprocessor(BaseEstimator, TransformerMixin):
 
                 X['Total Charges'] = X['Total Charges'].astype(
                     float)
+            logging.info(f"Sucessfully handled empty total charges.")
         except Exception as e:
             raise RuntimeError(
                 f"Error in Handling null value in total charges: {str(e)}")
@@ -81,7 +84,7 @@ class NumericalPreprocessor(BaseEstimator, TransformerMixin):
             self: Fitted preprocessor instance.
         """
         try:
-
+            logging.info(f"Numerical Preprocessor fit started..")
             if 'Total Charges' in X.columns:
                 self._handle_empty_total_charges(X)
                 X['Total Charges'] = X['Total Charges'].astype(
@@ -89,7 +92,7 @@ class NumericalPreprocessor(BaseEstimator, TransformerMixin):
 
             if all(col in X.columns for col in self.scale_cols):
                 self.scaling_pipeline.fit(X[self.scale_cols])
-
+            logging.info(f"Numerical Preprocessor fit ended.")
             return self
         except Exception as e:
             raise RuntimeError(f"Error in Preprocessor fit: {str(e)}")
@@ -104,6 +107,7 @@ class NumericalPreprocessor(BaseEstimator, TransformerMixin):
             pd.DataFrame: Transformed features.
         """
         try:
+            logging.info(f"Numerical Preprocessor transform started..")
             X_transformed: pd.DataFrame = X.copy()
             if 'Total Charges' in X_transformed.columns:
                 self._handle_empty_total_charges(X_transformed)
@@ -112,7 +116,7 @@ class NumericalPreprocessor(BaseEstimator, TransformerMixin):
             if all(col in X_transformed.columns for col in self.scale_cols):
                 X_transformed[self.scale_cols] = self.scaling_pipeline.transform(
                     X_transformed[self.scale_cols])
-
+            logging.info(f"Numerical Preprocessor transform ended.")
             return X_transformed
         except Exception as e:
             raise RuntimeError(f"Error in Preprocessor transform: {str(e)}")
