@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Telecom Customer Service Chatbot</title>
+    <link rel="stylesheet" href="/static/css/chatbot.css" />
+
+</head>
+
+<body>
+    <div class="header">
+        <div class="logo">
+            <div class="logo-icon">TC</div>
+            <div class="logo-text">TeleConnect</div>
+        </div>
+        <div class="user-profile">
+            <div class="user-avatar">{{ user_name.split() | map('first') | join('') }}</div>
+            <span>{{user_name}}</span>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="sidebar">
+            <div class="menu-item active">
+                <i>💬</i>
+                <span>Support Chat</span>
+            </div>
+            <!-- Additional sidebar items can go here -->
+            <div class="connection-status">
+                <div class="status-indicator">
+                    <div class="status-dot"></div>
+                    <span>4G Network - Excellent</span>
+                </div>
+                <div class="data-usage">
+                    <span>Monthly Data: 15GB / 20GB</span>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-container">
+            <div class="chat-header">
+                <div class="chat-title">TeleConnect Support</div>
+                <div class="chat-actions">
+                    <button class="chat-action-btn">📞</button>
+                    <button class="chat-action-btn">📋</button>
+                    <button class="chat-action-btn">⋮</button>
+                </div>
+            </div>
+
+            <div class="chat-messages" id="chat-messages">
+                <!-- Render the conversation history -->
+                {% for msg in messages %}
+                <div class="message {{ msg.sender }}">
+                    <div class="message-content">
+                        {{ msg.text }}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- The form to send a message -->
+            <form id="chat-form" class="chat-input-container">
+                <input type="text" name="message" id="chat-input" class="chat-input" placeholder="Type your message here..." required />
+                <button type="submit" class="send-btn">➤</button>
+            </form>
+        </div>
+    </div>
+</body>
+<script src="static/js/chatbot.js"></script>
+</html>
