@@ -15,6 +15,7 @@ class Predictor:
             config_path (str): Path to the YAML configuration file.
             model_path (str): Path to the trained model file.
         """
+        logging.info(f"Predictor Initialized")
         self.config_path = config_path
         self.model_path = model_path
         try:
@@ -49,7 +50,7 @@ class Predictor:
             predictions = self.model.predict(X)
             predictions_series = pd.Series(predictions, index=X.index, name='predictions')
             logging.info("Predictions generated successfully.")
-
+            
             return predictions_series
         except Exception as e:
             logging.error(f"Error in Predictor predict: {str(e)}")
