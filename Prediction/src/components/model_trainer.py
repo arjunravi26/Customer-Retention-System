@@ -16,6 +16,7 @@ class ModelTrainer(BaseEstimator, TransformerMixin):
         Args:
             config_path (str): Path to the YAML configuration file.
         """
+        logging.info(f"Model Trainer Initialized")
         self.config_path = config_path
         try:
             with open(config_path, 'r') as file:
@@ -43,6 +44,7 @@ class ModelTrainer(BaseEstimator, TransformerMixin):
             self: Fitted ModelTrainer instance.
         """
         try:
+            logging.info(f"Model Trainer fit started..")
             X_train, X_test, y_train, y_test = X
             logging.info("Starting model training with Logistic Regression...")
 
@@ -58,7 +60,7 @@ class ModelTrainer(BaseEstimator, TransformerMixin):
                 logging.info(f"Created directory: {model_dir}")
             joblib.dump(self.model, self.model_path)
             logging.info(f"Model saved to {self.model_path}")
-
+            logging.info(f"Model Trainer fit ended.")
             return self
         except Exception as e:
             logging.error(f"Error in ModelTrainer fit: {str(e)}")
@@ -73,4 +75,5 @@ class ModelTrainer(BaseEstimator, TransformerMixin):
         Returns:
             Tuple: Same input tuple (X_train, X_test, y_train, y_test).
         """
+        logging.info(f"Model Trainer ended.")
         return X
