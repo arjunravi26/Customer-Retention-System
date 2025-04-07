@@ -6,6 +6,7 @@ from typing import Tuple
 import pandas as pd
 class DataLoadSplitPipeline:
     def __init__(self, config_path: str, save_path: str):
+        
         self.config_path = config_path
         self.save_path = save_path
         try:

@@ -157,56 +157,57 @@ class GetAvailableOffersTool(Toolkit):
         ]
         return json.dumps(offers)
 
-if __name__ == '__main__':
-    import os
-    from dotenv import load_dotenv
-    from agno.agent import Agent
-    from agno.models.groq import Groq
+# if __name__ == '__main__':
+#     import os
+#     from dotenv import load_dotenv
+#     from agno.agent import Agent
+#     from agno.models.groq import Groq
 
-    load_dotenv()
-    groq_api_key = os.getenv('GROQ_API_KEY')
+#     load_dotenv()
+#     groq_api_key = os.getenv('GROQ_API_KEY')
 
-    if not groq_api_key:
-        print("Error: GROQ_API_KEY not found.")
-        exit()
+#     if not groq_api_key:
+#         print("Error: GROQ_API_KEY not found.")
+#         exit()
 
-    # Sample customer data
-    sample_customer_data = {
-        "Tenure Months": 15,
-        "Churn Score": 60,
-        "Monthly Charges": 85.5,
-        "Internet Service": "Fiber optic",
-        "Phone Service": "Yes",
-        "Contract": "One year",
-        "CLTV": 3500
-    }
+#     # Sample customer data
+#     sample_customer_data = {
+#         "Tenure Months": 15,
+#         "Churn Score": 60,
+#         "Monthly Charges": 85.5,
+#         "Internet Service": "Fiber optic",
+#         "Phone Service": "Yes",
+#         "Contract": "One year",
+#         "CLTV": 3500
+#     }
 
-    # Initialize tool instances
-    analyze_tool = AnalyzeCustomerTool()
-    offers_tool = GetAvailableOffersTool()
+#     # Initialize tool instances
+#     analyze_tool = AnalyzeCustomerTool()
+#     offers_tool = GetAvailableOffersTool()
 
-    # Initialize the agent with tool instances
-    agent = Agent(
-        model=Groq(api_key=groq_api_key),
-        description="An AI agent that can analyze customer data and suggest relevant offers.",
-        tools=[analyze_tool, offers_tool]  # Pass tool instances
-    )
+#     # Initialize the agent with tool instances
+#     agent = Agent(
+#         model=Groq(api_key=groq_api_key),
+#         description="An AI agent that can analyze customer data and suggest relevant offers.",
+#         tools=[analyze_tool, offers_tool]  # Pass tool instances
+#     )
 
-    # Example query
-    query = (
-        "Use the customer_analysis_tool to analyze this customer data: "
-        f"{json.dumps(sample_customer_data)} and then use the get_available_offers_tool "
-        "to list the available offers."
-    )
-    response = agent.run(query)
-    print("\nAgent Response:", response)
+#     # Example query
+#     query = (
+#         "Use the customer_analysis_tool to analyze this customer data: "
+#         f"{json.dumps(sample_customer_data)} and then use the get_available_offers_tool "
+#         "to list the available offers."
+#     )
+#     response = agent.run(query)
+#     print("\nAgent Response:", response)
 
-    # For direct testing
-    customer_insights = analyze_tool.run(sample_customer_data)  # Pass without keyword
-    print("\nDirect Customer Insights:", customer_insights)
+#     # For direct testing
+#     customer_insights = analyze_tool.run(sample_customer_data)  # Pass without keyword
+#     print("\nDirect Customer Insights:", customer_insights)
 
-    available_offers = offers_tool.run()
-    print("\nDirect Available Offers:", available_offers)
+#     available_offers = offers_tool.run()
+#     print("\nDirect Available Offers:", available_offers)
+
 if __name__ == '__main__':
     import os
     from dotenv import load_dotenv
@@ -236,105 +237,35 @@ if __name__ == '__main__':
     analyze_tool = AnalyzeCustomerTool()
     offers_tool = GetAvailableOffersTool()
 
-    # Initialize the agent with enhanced description and tools
+    # Initialize the agent with a focused description
     agent = Agent(
         model=Groq(api_key=groq_api_key),
-        description="An expert AI salesperson leveraging psychology to retain customers with tailored, irresistible offers.",
+        description="An expert AI salesperson with psychological mastery, designed to retain customers by crafting personalized, irresistible offer letters using reciprocity, scarcity, social proof, and emotional appeal.",
         tools=[analyze_tool, offers_tool]
     )
 
-    # Query to analyze customer data and fetch offers
+    # Refined query to get only the offer letter
     query = (
+        "You are an expert salesperson with deep psychological insight, tasked with retaining customers. "
         "Use the customer_analysis_tool to analyze this customer data: "
-        f"{json.dumps(sample_customer_data)} and then use the get_available_offers_tool "
-        "to retrieve all available offers. Based on the analysis, select the best offer "
-        "and craft a persuasive, personalized offer letter to retain the customer. Use "
-        "psychological principles like reciprocity, scarcity, social proof, and emotional "
-        "appeal to make the letter compelling and attractive."
+        f"{json.dumps(sample_customer_data)}. "
+        "Then, use the get_available_offers_tool to retrieve all available offers. "
+        "Based on the customer’s profile (e.g., loyalty, billing sensitivity, service type, customer value), "
+        "select the single best offer that matches their needs and motivations. "
+        "Write a concise, persuasive, and personalized offer letter to the customer in a warm, engaging tone. "
+        "Incorporate psychological principles: reciprocity (reward their loyalty), scarcity (highlight a limited-time offer), "
+        "social proof (mention others’ satisfaction), and emotional appeal (make them feel valued). "
+        "Include a clear call to action. Return only the final offer letter, formatted as a professional email with subject line, "
+        "greeting, body, and signature—no analysis or extra details."
     )
     response = agent.run(query)
 
-    # Process the response to extract insights and offers, then generate the letter
-    try:
-        # Assuming the agent returns a string that we can parse or use directly
-        # For simplicity, we'll simulate the logic here if the agent doesn't handle it fully
-        customer_insights = json.loads(analyze_tool.run(sample_customer_data))
-        all_offers = json.loads(offers_tool.run())
+    # Output the clean offer letter
+    print("\nPersonalized Offer Letter:\n", response)
 
-        # Select the best offer based on customer insights
-        best_offer = None
-        if customer_insights["loyalty"] in ["high", "medium"]:
-            # Prioritize loyalty or billing-related offers for loyal customers
-            for offer in all_offers:
-                if "loyalty" in offer["categories"] or "billing" in offer["categories"]:
-                    best_offer = offer
-                    break
-        elif customer_insights["billing_sensitivity"] in ["high", "above average"]:
-            # Focus on cost-saving offers for price-sensitive customers
-            for offer in all_offers:
-                if "billing" in offer["categories"] or "cost" in offer["categories"]:
-                    best_offer = offer
-                    break
-        elif customer_insights["service_type"] == "fiber_internet":
-            # Offer performance upgrades for fiber users
-            for offer in all_offers:
-                if "internet_speed" in offer["categories"]:
-                    best_offer = offer
-                    break
-        if not best_offer:
-            best_offer = all_offers[0]  # Fallback to first offer
-
-        # Craft the persuasive offer letter
-        loyalty_level = customer_insights["loyalty"]
-        customer_value = customer_insights["customer_value"]
-
-        if loyalty_level == "high":
-            intro = (
-                "Dear Valued Customer,\n\n"
-                "As one of our most loyal members—over 15 months strong!—we can’t imagine our community without you. "
-                "Your trust in us is something we cherish deeply, and we’re here to show our gratitude in a big way."
-            )
-        elif loyalty_level == "medium":
-            intro = (
-                "Dear Valued Customer,\n\n"
-                "You’ve been with us for a while now, and we’re thrilled to have you as part of our family! "
-                "We know you have choices, so we want to make sure you feel extra special for sticking with us."
-            )
-        else:
-            intro = (
-                "Dear Customer,\n\n"
-                "We’ve noticed you’re exploring what we have to offer, and we’re excited to make your experience even better! "
-                "Let’s turn your journey with us into something truly rewarding."
-            )
-
-        # Psychological hooks: Scarcity, reciprocity, social proof
-        offer_body = (
-            f"That’s why we’re offering you an exclusive deal: **{best_offer['name']}**—{best_offer['description']} "
-            "This isn’t just any offer—it’s tailored just for you because of your unique value to us "
-            f"(our data says you’re in our {customer_value} tier of amazing customers!). "
-            "Thousands of customers like you have loved this perk, and we’re giving it to you as a heartfelt thank-you. "
-            "But hurry—this special offer is only available for a limited time, and we’d hate for you to miss out!"
-        )
-
-        # Call to action with emotional appeal
-        closing = (
-            "\n\nLet’s keep this relationship thriving—accept this offer today and enjoy the benefits you truly deserve. "
-            "Reach out to us now at [contact info] or simply reply ‘YES’ to claim it. "
-            "We’re excited to see you smile!\n\n"
-            "Warm regards,\nYour Dedicated Team"
-        )
-
-        # Combine into the full letter
-        offer_letter = f"{intro}\n\n{offer_body}{closing}"
-        print("\nPersonalized Offer Letter:\n", offer_letter)
-
-    except Exception as e:
-        print("\nAgent Response:", response)
-        print("Error processing response:", e)
-
-    # For direct testing (optional)
+    # Optional debugging outputs
     customer_insights = analyze_tool.run(sample_customer_data)
-    print("\nDirect Customer Insights:", customer_insights)
+    print("\n[Debug] Direct Customer Insights:", customer_insights)
     available_offers = offers_tool.run()
-    print("\nDirect Available Offers:", available_offers)
-    print(offer_letter)
+    print("[Debug] Direct Available Offers:", available_offers)
+    print(response.content)

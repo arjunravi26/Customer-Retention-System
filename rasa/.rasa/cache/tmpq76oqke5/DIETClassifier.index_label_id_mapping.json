@@ -1,0 +1,18 @@
+{
+  "0": "affirm",
+  "1": "ask_bot_capabilities",
+  "2": "bot_challenge",
+  "3": "cancel_service",
+  "4": "complaint",
+  "5": "current_offers",
+  "6": "deny",
+  "7": "enquire_available_plan",
+  "8": "fallback_intent",
+  "9": "goodbye",
+  "10": "greet",
+  "11": "inquire_plan_details",
+  "12": "mood_great",
+  "13": "mood_unhappy",
+  "14": "price_increase",
+  "15": "slow_internet"
+}

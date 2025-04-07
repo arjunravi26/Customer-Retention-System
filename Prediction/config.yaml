@@ -1,34 +1,110 @@
-data_path: data/Telco_customer_churn.xlsx
+categorical_features:
+- Gender
+- Senior Citizen
+- Partner
+- Dependents
+- Phone Service
+- Multiple Lines
+- Internet Service
+- Online Security
+- Online Backup
+- Device Protection
+- Tech Support
+- Streaming TV
+- Streaming Movies
+- Contract
+- Paperless Billing
+- Payment Method
+- Total Charges
 cols_to_drop:
-  - 'CustomerID'
-  - 'Country'
-  - 'State'
-  - 'City'
-  - 'Zip Code'
-  - 'Lat Long'
-  - 'Latitude'
-  - 'Longitude'
-  - 'Churn Reason'
-  - 'Count'
-  - 'Churn Score'
-  - 'Churn Label'
-
+- CustomerID
+- Country
+- State
+- City
+- Zip Code
+- Lat Long
+- Latitude
+- Longitude
+- Churn Reason
+- Count
+- Churn Score
+- Churn Label
 cols_to_select:
-  - 'Gender'
-  - 'Senior Citizen'
-  - 'Partner'
-  - 'Tenure Months'
-  - 'Phone Service'
-  - 'Internet Service'
-  - 'Online Security'
-  - 'Online Backup'
-  - 'Device Protection'
-  - 'Tech Support'
-  - 'Streaming TV'
-  - 'Streaming Movies'
-  - 'Contract'
-  - 'Paperless Billing'
-  - 'Payment Method'
-  - 'Monthly Charges'
-  - 'Total Charges'
-  - 'CLTV'
+- Gender
+- Senior Citizen
+- Partner
+- Tenure Months
+- Phone Service
+- Internet Service
+- Online Security
+- Online Backup
+- Device Protection
+- Tech Support
+- Streaming TV
+- Streaming Movies
+- Contract
+- Paperless Billing
+- Payment Method
+- Monthly Charges
+- Total Charges
+- CLTV
+- Churn Value
+columns:
+- CustomerID
+- Count
+- Country
+- State
+- City
+- Zip Code
+- Lat Long
+- Latitude
+- Longitude
+- Gender
+- Senior Citizen
+- Partner
+- Dependents
+- Tenure Months
+- Phone Service
+- Multiple Lines
+- Internet Service
+- Online Security
+- Online Backup
+- Device Protection
+- Tech Support
+- Streaming TV
+- Streaming Movies
+- Contract
+- Paperless Billing
+- Payment Method
+- Monthly Charges
+- Total Charges
+- Churn Label
+- Churn Score
+- CLTV
+- Churn Reason
+data_path: data/Telco_customer_churn.xlsx
+model_params:
+  C: 100
+  penalty: l1
+  solver: liblinear
+model_path: models/churn_model.pkl
+numerical_features:
+- Tenure Months
+- Monthly Charges
+- Churn Value
+- CLTV
+param_grid:
+  C:
+  - 0.01
+  - 0.1
+  - 1
+  - 10
+  - 100
+  penalty:
+  - l1
+  - l2
+  solver:
+  - liblinear
+preprocessed_file: data/preprocessed_data.xlsx
+selected_data_path: data/selected_data.xlsx
+target: Churn Value

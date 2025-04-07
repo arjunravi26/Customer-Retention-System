@@ -27,7 +27,7 @@ async def post_chat(request: Request, message: str = Form(...)):
         payload = {"sender": "user", "message": message}
         response = requests.post(RASA_SERVER_URL, json=payload)
         response.raise_for_status()
-        print(f"{response.raise_for_status()}fsdaf")
+        print(f"{response.raise_for_status()}")
         bot_responses = response.json()  # Expecting a list of messages
     except Exception as e:
         bot_responses = [{"text": "Sorry, I couldn't process your request."}]

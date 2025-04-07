@@ -11,7 +11,9 @@
 # https://rasa.com/docs/rasa/custom-actions
 
 action_endpoint:
-  url: "http://localhost:5055/webhooks/rest/webhook"
+  url: "http://localhost:5055/webhook"
+  request_timeout: 30
+
 
 # Tracker store which is used to store the conversations.
 # By default the conversations are stored in memory.
@@ -40,3 +42,6 @@ action_endpoint:
 #  username: username
 #  password: password
 #  queue: queue
+
+rest:
+  timeout: 60

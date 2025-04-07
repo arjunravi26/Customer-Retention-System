@@ -9,97 +9,104 @@ intents:
   - mood_unhappy
   - bot_challenge
   - slow_internet
-  - bill_inquiry
   - price_increase
   - current_offers
-  - data_usage
-  - account_management
-  - service_outage
-  - roaming_inquiry
-  - tech_support
   - complaint
   - cancel_service
+  - fallback_intent
+  - enquire_available_plan
+  - ask_bot_capabilities
+  - inquire_plan_details
 
 responses:
   utter_greet:
-  - text: "Hey! How are you?"
+    - text: "Hey! How are you?"
 
   utter_cheer_up:
-  - text: "Here is something to cheer you up:"
-    image: "https://i.imgur.com/nGF1K8f.jpg"
+    - text: "Here is something to cheer you up:"
+      image: "https://i.imgur.com/nGF1K8f.jpg"
 
   utter_did_that_help:
-  - text: "Did that help you?"
+    - text: "Did that help you?"
 
   utter_happy:
-  - text: "Great, carry on!"
+    - text: "Great, carry on!"
 
   utter_goodbye:
-  - text: "Bye"
+    - text: "Bye"
 
   utter_iamabot:
-  - text: "I am a bot, powered by Rasa."
+    - text: "I am a bot, powered by Rasa."
 
   utter_slow_internet:
-    - text: "I'm sorry you're experiencing slow internet. Let's troubleshoot this. Have you tried restarting your router? If that doesn't help, I can run a remote diagnostic on your line or schedule a technician visit."
-    - text: "Slow internet can be frustrating. Let me check if there are any known issues in your area. Could you confirm your address or account number?"
-    - text: "I understand having slow internet is inconvenient. Let's check your current speed and compare it with your plan. Please run a speed test at speedtest.net and share the results with me."
-
-  utter_bill_inquiry:
-    - text: "I understand your concern about your bill. Let me look into the details. Could you provide your account number or the phone number associated with your account?"
-    - text: "I'll help clarify the charges on your bill. To access your account details, I'll need either your account number or the phone number registered with us."
-    - text: "Let me help you understand your bill better. I can break down all charges if you provide your account details. Is there a specific item on the bill you're questioning?"
+    - text: "I'm sorry you're experiencing slow internet. Please try restarting your device and checking your connections. If the issue persists, you may want to contact our technical support team."
+    - text: "Slow internet can be frustrating. A good first step is to restart your device and modem. If that doesn't resolve it, please consider reaching out to our technical experts."
+    - text: "I understand your concern about slow internet. Try rebooting your device and router. If the problem continues, our technical support team is available to help."
+    - text: "I see you're having issues with slow internet. Let me check if there are any known outages in your area."
 
   utter_price_increase:
-    - text: "I understand your concern about the price increase. This adjustment is part of our periodic review of service costs and market conditions. If you'd like, I can check if there's a more suitable plan for your usage patterns."
-    - text: "Price adjustments are typically communicated via email or SMS. Let me check if there were any notifications sent to you and explain the reasons behind the change."
-    - text: "Thank you for bringing this up. Price adjustments occur periodically due to increased operational costs and network improvements. I'd be happy to review your usage patterns and suggest a plan that might better suit your needs."
-
-  utter_current_offers:
-    - text: "We have several exciting offers available! Currently, we're offering 50% extra data on all recharges above $30, a family plan with shared data at 20% discount, and a special weekend unlimited data package. Would you like more details on any of these?"
-    - text: "Our current promotions include unlimited weekend calling for $5/month, double data on premium plans, and discounted international calling packages. Based on your usage, I can recommend the best option for you."
-    - text: "We have great seasonal offers this month! This includes upgraded speeds at no extra cost for 3 months, bundle discounts when you combine mobile and home internet, and loyalty rewards for customers of 2+ years. Would you like to know which offers you're eligible for?"
-
-  utter_data_usage:
-    - text: "I can check your current data usage for you. To access this information, I need your account number or registered phone number. Would you like to provide that?"
-    - text: "Let me help you track your data consumption. Could you share your account details so I can access this information for you?"
-    - text: "Unexpected data consumption can happen due to background apps, automatic updates, or video streaming. I can check your usage patterns if you provide your account details, and offer tips to manage your data more effectively."
-
-  utter_account_management:
-    - text: "I'd be happy to help you update your account information. What specific details would you like to change? For security purposes, I'll need to verify your identity first."
-    - text: "You can manage most account settings through our mobile app or website. Would you like me to guide you through the process, or would you prefer me to make the changes for you after identity verification?"
-    - text: "Certainly! I can help you manage your account. For security reasons, I'll need to verify your identity with a one-time password sent to your registered mobile number. Is that okay?"
-
-  utter_service_outage:
-    - text: "I apologize for any service disruption. Let me check if there are any reported outages in your area. Could you please confirm your location or postal code?"
-    - text: "I understand how frustrating service interruptions can be. I'll check our system for any known issues in your area. Could you please provide your address or postal code?"
-    - text: "Thank you for reporting this. Let me check if we have any ongoing maintenance or known issues affecting your area. Could you confirm your location so I can provide you with accurate information?"
-
-  utter_roaming_inquiry:
-    - text: "For international roaming, we offer several packages depending on your destination. Our most popular is the Global Traveler package at $10/day for unlimited calls, texts, and 1GB data. Where are you planning to travel?"
-    - text: "International roaming rates vary by country. We offer daily passes and country-specific packages that can save you money compared to standard roaming rates. Which country will you be visiting?"
-    - text: "I can help you with roaming options. We recommend activating an international package before traveling to avoid high charges. Where are you traveling to, and for how long? This will help me suggest the best option."
-
-  utter_tech_support:
-    - text: "I'm sorry you're experiencing technical difficulties. Let's troubleshoot together. Could you provide more details about the issue you're facing?"
-    - text: "I'd be happy to help with technical support. To better assist you, could you describe the problem in more detail? When did it start, and have you tried any solutions already?"
-    - text: "For technical issues, I'm here to help. Let's start with some basic troubleshooting. Have you tried restarting your device? If yes, please describe exactly what happens when you try to use our service."
+    - text: "I understand your concern about the price increase. You can review your current plan and available options in our plans. For further details, please check your account information."
+    - text: "Price adjustments can be confusing. Please refer to your plan details in our system for the most up-to-date information on rates and available plans."
+    - text: "Thank you for reaching out about the price change. I recommend reviewing your current plan details in our database to better understand the adjustments."
 
   utter_complaint:
-    - text: "I'm very sorry to hear about your negative experience. Your feedback is important to us. I'd like to document your complaint and escalate it to the appropriate department. Could you provide more details about your concern?"
-    - text: "I apologize for your unsatisfactory experience. I'll ensure your complaint is properly addressed. Could you share more details so I can document this accurately and forward it to our resolution team?"
-    - text: "Thank you for bringing this to our attention. We take all complaints seriously. I'll register your complaint and a senior customer service representative will contact you within 24 hours. Could you please elaborate on the issue?"
+    - text: "I'm sorry to hear about your negative experience. While I can check your current plan details, please note that for specific issues, contacting our customer support directly might be the best option."
+    - text: "We take your feedback seriously. I recommend checking your account details for plan-related issues and then reaching out to our support team for further assistance."
+    - text: "Thank you for your feedback. For a detailed review of your concern, please contact our customer support department. Meanwhile, you can review your plan details in our system."
 
   utter_cancel_service:
-    - text: "I'm sorry to hear you want to cancel your service. We'd hate to see you go. Before proceeding, may I ask the reason for cancellation? Perhaps I can offer a solution or a better plan that addresses your concerns."
-    - text: "I understand you're considering cancellation. Before we proceed, I'd like to see if there's anything we can do to resolve any issues you're experiencing. What's prompting you to cancel?"
-    - text: "I can help you with the cancellation process. However, based on your account history, you may be eligible for special retention offers. Would you like to hear about these before we proceed with cancellation?"
+    - text: "I'm sorry to hear you want to cancel your service. I can help review your current plan details. For cancellation requests, please contact our retention team directly."
+    - text: "I understand you're considering cancellation. I can show you your current plan details, but for cancellation you will need to speak with our customer support team."
+    - text: "Before proceeding with cancellation, I suggest reviewing your plan details in our database. For further steps, please reach out to our retention department."
+    - text: "I noticed you mentioned {user_concern}. Would you like to explore other options before canceling?"
 
   utter_default:
-    - text: "I'm not sure I understand. Could you rephrase your question or select from our common support topics?"
-    - text: "I didn't quite catch that. Could you please try asking in a different way or let me know which service area you need help with?"
-    - text: "I'm still learning and didn't understand your request. Could you provide more details or try asking in a different way?"
+    - text: "I'm not sure I understand. Could you please rephrase your request or check the available plan options in your account?"
+    - text: "I didn't quite catch that. Please try asking about your plan details or available offers."
+    - text: "I'm sorry, I didn't understand. Could you please provide more information or select a topic related to your service plan?"
 
+  utter_fallback:
+    - text: "I'm sorry, I don't understand that. Could you please rephrase? Here are some things I can help with: checking plans, reporting issues, or answering questions about your service."
+
+  utter_available_plan:
+    - text: "These are the available plans: {available_plans}"
+
+  utter_bot_capabilities:
+    - text: "I can help you with plan enquiries, internet issues, service charge information, and logging service complaints. How can I assist you today?"
+
+slots:
+  available_plans:
+    type: text
+    mappings:
+      - type: custom
+        action: "action_query_available_plan"
+  issue_type:
+    type: text
+    mappings:
+      - type: from_intent
+        intent: slow_internet
+        value: "slow_internet"
+      - type: from_intent
+        intent: price_increase
+        value: "price_increase"
+      - type: from_intent
+        intent: complaint
+        value: "complaint"
+      - type: from_intent
+        intent: cancel_service
+        value: "cancel_service"
+  user_concern:
+    type: text
+    mappings:
+      - type: from_text
+
+actions:
+  - action_get_confidence
+  - action_default_fallback
+  - action_query_available_plan
+  - action_set_user_concern
+  - utter_greet
+  - action_user_plan
 
 session_config:
   session_expiration_time: 60

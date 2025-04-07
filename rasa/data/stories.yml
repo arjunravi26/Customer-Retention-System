@@ -1,154 +1,57 @@
 version: "3.1"
 
 stories:
-
 - story: happy path
   steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: mood_great
-  - action: utter_happy
+    - intent: mood_great
+    - action: utter_happy
 
 - story: sad path 1
   steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: mood_unhappy
-  - action: utter_cheer_up
-  - action: utter_did_that_help
-  - intent: affirm
-  - action: utter_happy
+    - intent: mood_unhappy
+    - action: utter_cheer_up
+    - action: utter_did_that_help
+    - intent: affirm
+    - action: utter_happy
 
 - story: sad path 2
   steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: mood_unhappy
-  - action: utter_cheer_up
-  - action: utter_did_that_help
-  - intent: deny
-  - action: utter_goodbye
-- story: slow internet issue
-  steps:
-      - intent: greet
-      - action: utter_greet
-      - intent: slow_internet
-      - action: utter_slow_internet
-      - intent: affirm
-      - action: utter_goodbye
+    - intent: mood_unhappy
+    - action: utter_cheer_up
+    - action: utter_did_that_help
+    - intent: deny
+    - action: utter_goodbye
 
-- story: bill inquiry path
+- story: slow internet followed by cancellation
   steps:
-      - intent: greet
-      - action: utter_greet
-      - intent: bill_inquiry
-      - action: utter_bill_inquiry
-      - intent: goodbye
-      - action: utter_goodbye
+    - intent: slow_internet
+    - action: utter_slow_internet
+    - intent: cancel_service
+    - action: utter_cancel_service
+    - action: action_get_confidence
 
-- story: price increase inquiry
+- story: price increase followed by available plans
   steps:
-      - intent: greet
-      - action: utter_greet
-      - intent: price_increase
-      - action: utter_price_increase
-      - intent: current_offers
-      - action: utter_current_offers
-      - intent: affirm
-      - action: utter_goodbye
+    - intent: price_increase
+    - action: utter_price_increase
+    - intent: enquire_available_plan
+    - action: action_query_available_plan
+    - action: utter_available_plan
 
-- story: check current offers
+- story: complaint followed by bot capabilities
   steps:
-      - intent: greet
-      - action: utter_greet
-      - intent: current_offers
-      - action: utter_current_offers
-      - intent: goodbye
-      - action: utter_goodbye
+    - intent: complaint
+    - action: utter_complaint
+    - intent: ask_bot_capabilities
+    - action: utter_bot_capabilities
 
-- story: data usage check
+- story: fallback followed by valid intent
   steps:
-      - intent: greet
-      - action: utter_greet
-      - intent: data_usage
-      - action: utter_data_usage
-      - intent: goodbye
-      - action: utter_goodbye
+    - intent: fallback_intent
+    - action: action_default_fallback
+    - action: utter_fallback
 
-- story: account management request
+- story: User asks about plan details
   steps:
-      - intent: greet
-      - action: utter_greet
-      - intent: account_management
-      - action: utter_account_management
-      - intent: affirm
-      - action: utter_goodbye
-
-- story: service outage inquiry
-  steps:
-      - intent: greet
-      - action: utter_greet
-      - intent: service_outage
-      - action: utter_service_outage
-      - intent: goodbye
-      - action: utter_goodbye
-
-- story: roaming information request
-  steps:
-      - intent: greet
-      - action: utter_greet
-      - intent: roaming_inquiry
-      - action: utter_roaming_inquiry
-      - intent: affirm
-      - action: utter_goodbye
-
-- story: technical support request
-  steps:
-      - intent: greet
-      - action: utter_greet
-      - intent: tech_support
-      - action: utter_tech_support
-      - intent: slow_internet
-      - action: utter_slow_internet
-      - intent: goodbye
-      - action: utter_goodbye
-
-- story: complaint submission
-  steps:
-      - intent: greet
-      - action: utter_greet
-      - intent: complaint
-      - action: utter_complaint
-      - intent: goodbye
-      - action: utter_goodbye
-
-- story: cancellation request with retention
-  steps:
-      - intent: greet
-      - action: utter_greet
-      - intent: cancel_service
-      - action: utter_cancel_service
-      - intent: current_offers
-      - action: utter_current_offers
-      - intent: affirm
-      - action: utter_goodbye
-
-- story: cancellation request proceeding
-  steps:
-      - intent: greet
-      - action: utter_greet
-      - intent: cancel_service
-      - action: utter_cancel_service
-      - intent: deny
-      - action: utter_goodbye
-
-- story: multiple issues - slow internet and bill
-  steps:
-      - intent: greet
-      - action: utter_greet
-      - intent: slow_internet
-      - action: utter_slow_internet
-      - intent: bill_inquiry
-      - action: utter_bill_inquiry
-      - intent: goodbye
-      - action: utter_goodbye
+  - intent: inquire_plan_details
+  - action: action_user_plan

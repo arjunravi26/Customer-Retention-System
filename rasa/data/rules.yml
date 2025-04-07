@@ -1,13 +1,24 @@
 version: "3.1"
 
 rules:
-
 - rule: Say goodbye anytime the user says goodbye
   steps:
-  - intent: goodbye
-  - action: utter_goodbye
+    - intent: goodbye
+    - action: utter_goodbye
 
-- rule: Say 'I am a bot' anytime the user challenges
+- rule: Say "I am a bot" anytime the user challenges
   steps:
-  - intent: bot_challenge
-  - action: utter_iamabot
+    - intent: bot_challenge
+    - action: utter_iamabot
+
+- rule: Handle low confidence queries
+  steps:
+    - intent: nlu_fallback
+    - action: action_default_fallback
+
+- rule: Welcome the user at the start of the conversation
+  conversation_start: true
+  steps:
+  - intent: greet
+  - action: utter_greet
+
