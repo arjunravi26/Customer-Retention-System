@@ -1,4 +1,3 @@
-# src/api/service.py
 import pandas as pd
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
@@ -48,7 +47,6 @@ async def predict_churn(customer_data: CustomerData):
         input_df = pd.DataFrame([input_dict])
         logging.info(f"Raw input data: {input_df.to_dict(orient='records')}")
 
-        # Rename columns to match training data (adjust based on X_train logs)
         input_df = input_df.rename(columns={
             'Senior_Citizen': 'Senior Citizen',
             'Tenure_Months': 'Tenure Months',
@@ -76,4 +74,4 @@ async def predict_churn(customer_data: CustomerData):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8001)
