@@ -1,16 +1,14 @@
 import secrets
 from contextlib import contextmanager
 from pathlib import Path
-from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-import random
 import json
 from typing import List
 import psycopg2
 import requests
 from fastapi import FastAPI, Form, Request,HTTPException
 import pandas as pd
-from fastapi.responses import (FileResponse, HTMLResponse, JSONResponse,
+from fastapi.responses import (HTMLResponse, JSONResponse,
                                RedirectResponse)
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
