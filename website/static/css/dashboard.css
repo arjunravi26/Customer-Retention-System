@@ -1,0 +1,109 @@
+/* Custom styles for the dashboard */
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+/* Header */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Tabs */
+.tabs ul li button {
+    transition: all 0.3s ease;
+}
+
+.tabs ul li.active button {
+    background-color: #ffffff;
+    border-bottom: 2px solid #3b82f6;
+    color: #3b82f6;
+}
+
+/* Tab Content */
+.tab-content {
+    padding-top: 120px; /* Space for fixed header */
+    min-height: 100vh;
+}
+
+.tab-pane {
+    display: none;
+    transition: opacity 0.3s ease;
+}
+
+.tab-pane.active {
+    display: block;
+    opacity: 1;
+}
+
+/* Tableau Dashboard */
+.tableau-wrapper {
+    width: 100vw;
+    height: calc(100vh - 120px);
+    position: relative;
+}
+
+.tableauPlaceholder, .tableauViz {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Table */
+#customer-table th {
+    background-color: #f3f4f6;
+    font-weight: 600;
+    text-align: left;
+}
+
+#customer-table th.cursor-pointer:hover {
+    background-color: #e5e7eb;
+}
+
+#customer-table td {
+    padding: 12px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+/* Topic Cards */
+.topic-card {
+    background-color: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 16px;
+    transition: transform 0.2s ease;
+}
+
+.topic-card:hover {
+    transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .tab-content {
+        padding-top: 160px;
+    }
+
+    .tableau-wrapper {
+        height: calc(100vh - 160px);
+    }
+
+    .tabs ul {
+        flex-direction: column;
+    }
+
+    .tabs ul li {
+        width: 100%;
+    }
+
+    .tabs ul li button {
+        width: 100%;
+        text-align: left;
+    }
+}
