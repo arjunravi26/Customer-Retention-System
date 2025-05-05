@@ -1,64 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Embedded Tableau Dashboard</title>
-    <style>
-        .tableau-container {
-            width: 100%;
-            height: 800px;
-            border: none;
-        }
-    </style>
+    <title>Telecom Admin Dashboard</title>
+    <!-- Tailwind CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/dashboard.css">
 </head>
+<body class="bg-gray-100 font-sans">
+    <!-- Fixed Header -->
+    <header class="fixed top-0 left-0 right-0 bg-white shadow z-10">
+        <div class="px-4 py-4">
+            <h1 class="text-3xl font-bold text-gray-800">Telecom Admin Dashboard</h1>
+            <!-- Tabs Navigation -->
+            <nav class="tabs mt-4">
+                <ul class="flex border-b" role="tablist">
+                    <li class="tab-link active" data-tab="dashboard" role="tab" aria-selected="true">
+                        <button class="px-4 py-2 text-gray-600 font-semibold">Tableau Dashboard</button>
+                    </li>
+                    <li class="tab-link" data-tab="customers" role="tab" aria-selected="false">
+                        <button class="px-4 py-2 text-gray-600 font-semibold">Customer Details</button>
+                    </li>
+                    <li class="tab-link" data-tab="topics" role="tab" aria-selected="false">
+                        <button class="px-4 py-2 text-gray-600 font-semibold">Topic Modeling</button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
 
-<body>
-    <h1>My Tableau Dashboard</h1>
-    <div class='tableauPlaceholder' id='viz1742459277790' style='position: relative'><noscript><a href='#'><img
-                    alt='Dashboard 2 '
-                    src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;St&#47;Store_17424499718470&#47;Dashboard2&#47;1_rss.png'
-                    style='border: none' /></a></noscript><object class='tableauViz' style='display:none;'>
-            <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' />
-            <param name='embed_code_version' value='3' />
-            <param name='site_root' value='' />
-            <param name='name' value='Store_17424499718470&#47;Dashboard2' />
-            <param name='tabs' value='no' />
-            <param name='toolbar' value='no' />
-            <param name='static_image'
-                value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;St&#47;Store_17424499718470&#47;Dashboard2&#47;1.png' />
-            <param name='animate_transition' value='yes' />
-            <param name='display_static_image' value='yes' />
-            <param name='display_spinner' value='yes' />
-            <param name='display_overlay' value='yes' />
-            <param name='display_count' value='yes' />
-            <param name='language' value='en-US' />
-        </object></div>
-    <script
-        type='text/javascript'>
-        var divElement = document.getElementById('viz1742459277790');
-        var vizElement = divElement.getElementsByTagName('object')[0];
-        if (divElement.offsetWidth > 800) {
-            vizElement.style.minWidth = '100%';
-            vizElement.style.maxWidth = '100%';
-            vizElement.style.minHeight = '560px';
-            vizElement.style.maxHeight = (divElement.offsetWidth * 0.75) + 'px';
-        }
-        else if (divElement.offsetWidth > 500) {
-            vizElement.style.minWidth = '100%';
-            vizElement.style.maxWidth = '100%';
-            vizElement.style.minHeight = '560px';
-            vizElement.style.maxHeight = (divElement.offsetWidth * 0.75) + 'px';
-        }
-        else {
-            vizElement.style.width = '100%';
-            vizElement.style.height = '900px';
-        }
-        var scriptElement = document.createElement('script');
-        scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
-        vizElement.parentNode.insertBefore(scriptElement, vizElement);
-    </script>
+    <!-- Tab Content Area -->
+    <main class="tab-content pt-[120px]">
+        <!-- Tableau Dashboard Tab -->
+        <section id="dashboard" class="tab-pane active" role="tabpanel">
+            <div class="tableau-wrapper">
+                <div class='tableauPlaceholder' id='viz1744952153280' style='position: relative'>
+                    <noscript>
+                        <a href='#'>
+                            <img alt='Dashboard 1' src='https://public.tableau.com/static/images/te/telcom_17449505978740/Dashboard1/1_rss.png' style='border: none' />
+                        </a>
+                    </noscript>
+                    <object class='tableauViz' style='display:none;'>
+                        <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' />
+                        <param name='embed_code_version' value='3' />
+                        <param name='site_root' value='' />
+                        <param name='name' value='telcom_17449505978740/Dashboard1' />
+                        <param name='tabs' value='no' />
+                        <param name='toolbar' value='yes' />
+                        <param name='static_image' value='https://public.tableau.com/static/images/te/telcom_17449505978740/Dashboard1/1.png' />
+                        <param name='animate_transition' value='yes' />
+                        <param name='display_static_image' value='yes' />
+                        <param name='display_spinner' value='yes' />
+                        <param name='display_overlay' value='yes' />
+                        <param name='display_count' value='yes' />
+                        <param name='language' value='en-US' />
+                        <param name='filter' value='publish=yes' />
+                    </object>
+                </div>
+            </div>
+        </section>
+
+        <!-- Customer Details Tab -->
+        <section id="customers" class="tab-pane hidden" role="tabpanel">
+            <div class="bg-white p-6">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Customer Details</h2>
+                <div id="customer-error" class="text-red-600 hidden mb-4">Failed to load customer data. Please try again later.</div>
+                <!-- Filters -->
+                <div class="flex flex-col md:flex-row gap-4 mb-4">
+                    <div>
+                        <label class="block text-gray-700">Churn Probability (%)</label>
+                        <input type="number" id="churn-filter" min="0" max="100" class="w-full md:w-32 p-2 border rounded" placeholder="Min Churn %">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700">Customer Loyalty</label>
+                        <select id="loyalty-filter" class="w-full md:w-32 p-2 border rounded">
+                            <option value="all">All</option>
+                            <option value="Low">Low</option>
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
+                        </select>
+                    </div>
+                    <div class="flex items-end">
+                        <button id="apply-filters" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Apply Filters</button>
+                    </div>
+                </div>
+                <!-- Table -->
+                <div class="overflow-x-auto">
+                    <table id="customer-table" class="min-w-full bg-white border">
+                        <thead>
+                            <tr class="bg-gray-200">
+                                <th class="p-2 border"><input type="checkbox" id="select-all"></th>
+                                <th class="p-2 border cursor-pointer" data-sort="customer_id">Customer ID</th>
+                                <!-- <th class="p-2 border cursor-pointer" data-sort="name">Name</th> -->
+                                <th class="p-2 border cursor-pointer" data-sort="loyalty">Loyalty</th>
+                                <th class="p-2 border cursor-pointer" data-sort="churn">Churn Probability (%)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="customer-table-body"></tbody>
+                    </table>
+                </div>
+                <!-- Send Offer Button -->
+                <div class="mt-4">
+                    <button id="send-offer" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 disabled:bg-gray-400" disabled>Send Offer</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Topic Modeling Tab -->
+        <section id="topics" class="tab-pane hidden" role="tabpanel">
+            <div class="bg-white p-6">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Topic Modeling Results</h2>
+                <p class="text-gray-600 mb-4">Identified customer issues from topic modeling analysis</p>
+                <div id="topics-error" class="text-red-600 hidden mb-4">Failed to load topic data. Please try again later.</div>
+                <div id="topics-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Tableau JavaScript -->
+    <script src="https://public.tableau.com/javascripts/api/viz_v1.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="/static/js/dashboard.js"></script>
 </body>
-
 </html>
