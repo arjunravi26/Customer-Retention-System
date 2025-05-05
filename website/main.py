@@ -1,24 +1,40 @@
 import secrets
 from contextlib import contextmanager
-
+from pathlib import Path
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+import random
+import json
+from typing import List
 import psycopg2
 import requests
-from fastapi import FastAPI, Form, Request
+from fastapi import FastAPI, Form, Request,HTTPException
+import pandas as pd
 from fastapi.responses import (FileResponse, HTMLResponse, JSONResponse,
                                RedirectResponse)
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from psycopg2.extras import RealDictCursor
 from starlette.middleware.sessions import SessionMiddleware
-
-from custom_logging.logging import logging, setup_logging
-
+from psycopg2.extras import RealDictCursor
+from .database import insert_chat_message
+from .generate_id import generate_chat_id
+from .logger import logging
+from  .prediction import predict
+from .send_email import send_email
+from .top2vec_model import send_documents,receive_topics
+from .data import fetch_data
+from .get_admin import get_admin
 app = FastAPI()
 SECRET_KEY = secrets.token_urlsafe(32)
-setup_logging()
+BASE_DIR = Path(__file__).resolve().parent
+static_dir = BASE_DIR / "static"
+template_dir = BASE_DIR / "templates"
+if not static_dir.is_dir():
+    raise RuntimeError(f"Cannot find static folder at {static_dir}")
 app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY)
-templates = Jinja2Templates(directory="website/templates")
-app.mount("/static", StaticFiles(directory="website/static"), name="static")
+templates = Jinja2Templates(directory=template_dir)
+app.mount("/static", StaticFiles(directory=static_dir), name="static")
 conversation_history = []
 
 DATABASE_CONFIG = {
@@ -29,6 +45,8 @@ DATABASE_CONFIG = {
     "port": "5432"
 }
 
+class OfferRequest(BaseModel):
+    customer_ids: List[str]
 
 @contextmanager
 def get_db_connection():
@@ -59,7 +77,7 @@ def fetch_user_by_id(user_id: str):
 @app.get("/")
 def read_root(request: Request):
     logging.info("running root function")
-    return templates.TemplateResponse("login.html",{"request":request})
+    return templates.TemplateResponse("login.html", {"request": request})
 
 
 @app.post("/api/login")
@@ -77,13 +95,25 @@ async def login(request: Request, name: str = Form(...), user_id: str = Form(...
     return RedirectResponse(url="/chatbot", status_code=303)
 
 
+from fastapi.responses import HTMLResponse
+
+@app.post("/api/admin-login")
+async def login(request: Request, username: str = Form(...), password: str = Form(...)):
+    logging.info("Fetching data")
+    db_username, db_password = get_admin()
+    if username == db_username and password == db_password:
+        request.session['admin_name'] = username
+        return RedirectResponse(url="/dashboard", status_code=303)
+    else:
+        return HTMLResponse(content="Invalid username or password", status_code=401)
+
+
 @app.get("/dashboard")
 def dashboard(request: Request):
-    user = request.session.get('user_id')
-    name = request.session.get('user')
-    if not user:
+    admin = request.session.get('admin_name')
+    if not admin:
         return RedirectResponse(url="/")
-    return templates.TemplateResponse("dashboard.html", {"request": request, "user": user})
+    return templates.TemplateResponse("dashboard.html", {"request": request})
 
 
 @app.get("/chatbot")
@@ -96,33 +126,148 @@ def chatbot(request: Request):
         return RedirectResponse(url="/")
     return templates.TemplateResponse("chatbot.html", {"request": request, "user_name": name, "message": conversation_history})
 
+@app.get("/admin-login")
+def admin_login(request: Request):
+    logging.info("log in to admin")
+    return templates.TemplateResponse("admin_login.html", {"request": request})
 
 RASA_SERVER_URL = "http://localhost:5005/webhooks/rest/webhook"
 
+
 @app.post("/chat", response_class=JSONResponse)
 async def post_chat(request: Request, message: str = Form(...)):
+
     logging.info("Connecting to Rasa server")
-
+    customer_id = request.session.get('user_id')
+    chat_id = generate_chat_id(customer_id)
+    insert_chat_message(chat_id, customer_id, "user", message)
     conversation_history.append({"sender": "user", "text": message})
-
+    user_id = request.session.get('user_id')
     try:
         user_id = request.session.get('user_id')
         payload = {"sender": user_id, "message": message}
+        logging.info(f"Sending payload to Rasa: {payload}")
         response = requests.post(RASA_SERVER_URL, json=payload, timeout=15)
         response.raise_for_status()
         bot_responses = response.json()
-        print(bot_responses)
-        extracted_responses = " ".join([msg["text"] for msg in bot_responses if "text" in msg])
+        extracted_responses = " ".join(
+            [msg["text"] for msg in bot_responses if "text" in msg])
 
     except requests.exceptions.RequestException as e:
         logging.exception(f"Could not send data to Rasa server: {e}")
         extracted_responses = "Could not process the request. Please try again."
 
+    customer_id = request.session.get('user_id')
+    chat_id = generate_chat_id(customer_id)
+    insert_chat_message(chat_id, customer_id, "chatbot", extracted_responses)
     conversation_history.append({"sender": "bot", "text": extracted_responses})
     return JSONResponse({"message": extracted_responses})
+
+def get_customer_db():
+    try:
+        with get_db_connection() as conn:
+            with conn.cursor(cursor_factory=RealDictCursor) as cur:
+                cur.execute(
+                    "SELECT * FROM customer_data;")
+                users = cur.fetchall()
+    except Exception as e:
+        users = []
+        logging.exception(f"Exception while selecting data from database {e}")
+    return users
+
+def get_loyalty(user):
+    contract = user.get("contract", "").lower()
+    if "month" in contract:
+        return "Low"
+    elif "one year" in contract:
+        return "Medium"
+    elif "two year" in contract:
+        return "High"
+    else:
+        return "Unknown"
+
+def get_customer():
+    users = get_customer_db()
+    users = users[:30]
+    if not users:
+        raise HTTPException(status_code=404, detail="No users found.")
+
+    customers = []
+    for user in users:
+        features = {
+            "Gender":             user["gender"],
+            "Senior_Citizen":     user["senior_citizen"],
+            "Partner":            user["partner"],
+            "Tenure_Months":      user["tenure_months"],
+            "Phone_Service":      user["phone_service"],
+            "Internet_Service":   user["internet_service"],
+            "Online_Security":    user["online_security"],
+            "Online_Backup":      user["online_backup"],
+            "Device_Protection":  user["device_protection"],
+            "Tech_Support":       user["tech_support"],
+            "Streaming_TV":       user["streaming_tv"],
+            "Streaming_Movies":   user["streaming_movies"],
+            "Contract":           user["contract"],
+            "Paperless_Billing":  user["paperless_billing"],
+            "Payment_Method":     user["payment_method"],
+            "Monthly_Charges":    float(user["monthly_charges"]),
+            "Total_Charges":      float(user["total_charges"]) if user["total_charges"] not in (None, "") else 0.0,
+            "CLTV":               float(user["cltv"]),
+        }
+
+        prediction_json = predict(features)
+        try:
+            result = json.loads(prediction_json)
+            churn_score = result.get("churn_score")
+            logging.info(f"Prediction score for {user['customerid']} is {churn_score}")
+        except json.JSONDecodeError:
+            logging.error(f"Could not decode prediction JSON: {prediction_json}")
+            churn_score = None
+
+        customers.append({
+            "customer_id":      user["customerid"],
+            "loyalty":          get_loyalty(user),
+            "churn_probability": churn_score,
+        })
+
+    return customers
+
+
+@app.get("/api/customers")
+async def fetch_users():
+    try:
+        return get_customer()
+    except Exception as e:
+        logging.exception("Error in fetch_users")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/topics")
+async def get_topics():
+    documents = fetch_data()
+    send_documents(documents)
+    return receive_topics()
+
+
+@app.post("/api/send-offer")
+async def send_offer(request: OfferRequest):
+    try:
+        logging.info("In send offer")
+        customer_ids = request.customer_ids
+        print(f"Customer id is {customer_ids}")
+        if not customer_ids:
+            return {"status": "error", "message": "No customers selected"}
+        logging.info(f"Customer id is {customer_ids}")
+        mail = send_email(customer_id=customer_ids[0])
+        logging.info(f"Email: {mail}")
+        print(mail)
+        print(f"Sending offers to customer IDs: {customer_ids}")
+        return {"status": "success", "message": f"Offers sent to {len(customer_ids)} customers"}
+    except Exception as e:
+        logging.info(f"Error in send offer {e}")
 
 
 if __name__ == "__main__":
     import uvicorn
     logging.info("Start app")
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True, log_config=None)
+    uvicorn.run("main:app", host="0.0.0.0", port=8000,
+                reload=True, log_config=None)
