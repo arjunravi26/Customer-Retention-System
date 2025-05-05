@@ -50,22 +50,14 @@ class PredictionPipeline:
             numpy.ndarray: Predicted churn scores.
         """
         try:
-            print('here')
             logging.info(f"Input data columns: {X.columns.tolist()}")
             logging.info(f"Input data sample: {X.iloc[0].to_dict()}")
 
-            # Apply categorical preprocessing
-            # print('here',self.cat_preprocessor.transform())
             X_cat = self.cat_preprocessor.transform(X)
-            print(f"complete categorical preprocessing {X_cat}")
             logging.info("Categorical preprocessing completed.")
 
-            # Apply numerical preprocessing
             X_transformed = self.num_preprocessor.transform(X_cat)
             logging.info(f"Numerical preprocessing completed. Transformed shape: {X_transformed.shape}")
-            print(f"complete numerical preprocessing {X_transformed}")
-            # Predict
-            print(self.model.feature_names_in_)
             predictions = self.model.predict_proba(X_transformed)
             logging.info(f"Prediction completed: {predictions}")
             print(predictions)
