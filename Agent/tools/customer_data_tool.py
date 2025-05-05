@@ -20,21 +20,7 @@ class CustomeData(Toolkit):
                  Example: '{"CustomerID": "123", "TenureMonths": 24, "MonthlyCharges": 95.0, ...}'
                  Returns '{}' if no customer data is found for the given ID.
 
-        Output Schema:
-            {
-                "type": "object",
-                "properties": {
-                    "CustomerID": {"type": "string"},
-                    "TenureMonths": {"type": "integer"},
-                    "Churn Score": {"type": "integer"},
-                    "Monthly Charges": {"type": "number"},
-                    "Internet Service": {"type": "string"},
-                    "Phone Service": {"type": "string"},
-                    "Contract": {"type": "string"},
-                    "CLTV": {"type": "integer"}
-                    # Add other relevant properties based on your customer_data table
-                }
-            }
+   
         """
         conn = None
         cursor = None

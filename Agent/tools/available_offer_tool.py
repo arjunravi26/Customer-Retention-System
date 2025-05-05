@@ -1,6 +1,8 @@
 from agno.tools.toolkit import Toolkit
 from typing import Dict, List, Union
 import json
+
+
 class GetAvailableOffersTool(Toolkit):
     """A tool for retrieving a list of available customer offers."""
 
@@ -19,19 +21,6 @@ class GetAvailableOffersTool(Toolkit):
             str: A JSON string of available offers.
                 Example: '[{"name": "Bill Discount", "description": "Save 20%...",
                           "categories": ["billing", "cost"]}, ...]'
-
-        Output Schema:
-            {
-                "type": "array",
-                "items": {
-                    "type": "object",
-                    "properties": {
-                        "name": {"type": "string"},
-                        "description": {"type": "string"},
-                        "categories": {"type": "array", "items": {"type": "string"}}
-                    }
-                }
-            }
         """
         offers = [
             {
@@ -56,5 +45,3 @@ class GetAvailableOffersTool(Toolkit):
             }
         ]
         return json.dumps(offers)
-
-

@@ -26,27 +26,8 @@ class AnalyzeCustomerTool(Toolkit):
                           "service_type": "fiber_internet", "contract_stability": "high",
                           "customer_value": "medium"}'
 
-        Input Schema:
-            {
-                "type": "object",
-                "properties": {
-                    "customer_data": {
-                        "type": "object",
-                        "properties": {
-                            "Tenure Months": {"type": "integer"},
-                            "Churn Score": {"type": "integer"},
-                            "Monthly Charges": {"type": "number"},
-                            "Internet Service": {"type": "string"},
-                            "Phone Service": {"type": "string"},
-                            "Contract": {"type": "string"},
-                            "CLTV": {"type": "integer"}
-                        }
-                    }
-                },
-                "required": ["customer_data"]
-            }
+
         """
-        print(customer_data)
         analysis: Dict[str, Union[str, float]] = {}
 
         tenure = customer_data.get("Tenure Months", 0)

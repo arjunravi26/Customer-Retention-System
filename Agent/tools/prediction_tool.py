@@ -1,7 +1,8 @@
-from agno.tools.toolkit import Toolkit
-from typing import Dict, List, Union
 import json
+from typing import Dict
+
 import requests
+from agno.tools.toolkit import Toolkit
 
 
 class ChurnPredictionTool(Toolkit):
@@ -33,21 +34,7 @@ class ChurnPredictionTool(Toolkit):
                  Returns a JSON string with an error message if the API call fails.
                  Example of error: '{"error": "API request failed", "details": "..."}'
 
-        Output Schema:
-            {
-                "type": "object",
-                "properties": {
-                    "churn_score": {"type": "number"}
-                }
-            }
-            or
-            {
-                "type": "object",
-                "properties": {
-                    "error": {"type": "string"},
-                    "details": {"type": "string"}
-                }
-            }
+
         """
         try:
             headers = {'Content-Type': 'application/json'}

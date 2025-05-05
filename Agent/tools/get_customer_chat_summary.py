@@ -1,7 +1,9 @@
-from agno.tools.toolkit import Toolkit
-from typing import Dict, List, Union
 import json
+from typing import Dict, List, Union
+
 import psycopg2
+from agno.tools.toolkit import Toolkit
+
 
 class RetrieveLastChatTool(Toolkit):
     """A tool for retrieving the last chat conversation for a given customer."""
@@ -20,17 +22,7 @@ class RetrieveLastChatTool(Toolkit):
                  Example: '[{"sender": "user", "message_content": "Hello"}, {"sender": "chatbot", "message_content": "Hi, how can I help you?"}]'
                  Returns '{"message": "No chat history found for this customer."}' if no chat is found.
 
-        Output Schema:
-            {
-                "type": "array",
-                "items": {
-                    "type": "object",
-                    "properties": {
-                        "sender": {"type": "string", "enum": ["user", "chatbot"]},
-                        "message_content": {"type": "string"}
-                    }
-                }
-            }
+
         """
         conn = None
         cursor = None
