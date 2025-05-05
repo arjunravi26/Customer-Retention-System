@@ -45,13 +45,13 @@ class ModelTrainer(BaseEstimator, TransformerMixin):
         """
         try:
             logging.info(f"Model Trainer fit started..")
-            X_train, X_test, y_train, y_test = X
+            # X_train, X_test, y_train, y_test = X
             logging.info("Starting model training with Logistic Regression...")
 
-            if X_train.empty or y_train.empty:
+            if X.empty or y.empty:
                 raise ValueError("Training data or labels are empty.")
 
-            self.model.fit(X_train,y_train)
+            self.model.fit(X,y)
             logging.info("Model training completed successfully.")
             logging.info(f"Fitted models is : {self.model}")
             model_dir = os.path.dirname(self.model_path)
