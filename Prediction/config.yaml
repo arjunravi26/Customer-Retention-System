@@ -2,7 +2,6 @@ categorical_features:
 - Gender
 - Senior Citizen
 - Partner
-- Dependents
 - Phone Service
 - Multiple Lines
 - Internet Service
@@ -16,6 +15,7 @@ categorical_features:
 - Paperless Billing
 - Payment Method
 - Total Charges
+categorical_preprocessor_path: models/categorical_preprocessor.joblib
 cols_to_drop:
 - CustomerID
 - Country
@@ -93,6 +93,7 @@ numerical_features:
 - Monthly Charges
 - Churn Value
 - CLTV
+numerical_preprocessor_path: models/numerical_preprocessor.joblib
 param_grid:
   C:
   - 0.01
