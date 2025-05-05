@@ -43,7 +43,6 @@ nlu:
   - intent: deny
     examples: |
       - no
-      - n
       - never
       - I don't think so
       - don't like that
@@ -66,7 +65,6 @@ nlu:
       - so so perfect
       - so good
       - so perfect
-      - Thank you
 
   - intent: mood_unhappy
     examples: |
@@ -91,6 +89,7 @@ nlu:
       - are you a human?
       - am I talking to a bot?
       - am I talking to a human?
+
   - intent: slow_internet
     examples: |
       - my internet is slow
@@ -108,6 +107,18 @@ nlu:
       - Why is my internet so slow lately? It’s making it hard to do anything online.
       - Streaming videos is a nightmare because of how slow my internet is.
       - I keep getting lag when I’m trying to browse or play games online.
+      - Mobile internet is terrible today.
+      - Getting bad speeds on mobile.
+      - Data connection is poor.
+      - Mobile data speeds are really low right now.
+      - I pay for high-speed internet but never seem to get the promised speeds.
+      - My internet is so unreliable lately that I can’t even attend Zoom calls without issues.
+      - Streaming over mobile is impossible today.
+      - My mobile data connection is so bad that I can’t even send WhatsApp messages or open Instagram.
+      - Watching a video or attending a call over mobile data is impossible due to the constant lag.
+      - I have an unlimited data plan but the speeds are nowhere near usable right now.
+      - Very low Mbps on cellular network.
+      - 5G is connected but acting like 3G.
 
   - intent: price_increase
     examples: |
@@ -125,9 +136,28 @@ nlu:
       - Did you guys raise the rates recently? My bill is higher than usual.
       - I think there’s been a mistake with my billing because the amount is higher than usual.
       - Why is my monthly fee different now? I don’t recall being notified about any changes.
+      - Price went up?
+      - Why higher charges now?
+      - What's this extra charge?
+      - Did my plan get more expensive?
+      - You raised the price?
+      - I just noticed that my monthly charge is more than usual.
+      - The plan was cheaper last month. Why the change?
+      - I’ve been charged more than the regular fee.
+      - I’ve been using the same plan for months, and now I’m seeing a price increase without any prior notice.
+      - Can you explain why my bill has increased so much this month compared to earlier ones?
+      - It looks like there’s a sudden jump in my billing amount. Was there a rate revision recently?
+      - I’m trying to figure out why my total due this month is higher than before. Was there a service upgrade?
 
   - intent: current_offers
     examples: |
+      - Show me available plans.
+      - What are the latest offers?
+      - What plans do you have?
+      - I want to know about the available plans.
+      - Can you list your current plans?
+      - What are your plan options?
+      - Offers available?
       - what offers do you have
       - any special deals available
       - current promotions
@@ -146,24 +176,42 @@ nlu:
       - Do you have any limited-time offers that I can sign up for?
       - What’s the best deal you can offer me right now?
       - Are there any discounts for loyal customers who’ve been with you for a while?
+      - Are there any offers for long-term prepaid plans?
+      - Do you have any low-cost data plans right now?
+      - I’m looking for a mobile plan. What do you have?
+      - I just want to check out your plans.
+      - Could you explain your plans to me?
+      - I want to explore your available plans.
+      - What plans do you have for internet usage?
+      - I need a plan with data — what options are there?
+      - What kind of mobile plans are you offering currently?
 
-  - intent: complaint
+  - intent: inquire_plan_details
     examples: |
-      - I want to file a complaint
-      - poor service quality
-      - unhappy with customer support
-      - not satisfied with resolution
-      - service disappointment
-      - complaint about staff behavior
-      - unsatisfactory experience
-      - formal complaint submission
-      - dissatisfied with service
-      - want to speak to a manager
-      - I’ve had multiple problems with your service, including slow speeds and unhelpful customer support. I need to file a complaint.
-      - The way my issue was handled last time was not satisfactory. I want to speak to a manager about this.
-      - I’m really frustrated with the ongoing issues and lack of resolution. This is unacceptable.
-      - The service has been disappointing lately, and I want to report a problem formally.
-      - I’m not happy with how things are going. Can I escalate this issue?
+      - What is my current plan?
+      - Can you tell me about my subscription?
+      - What are the benefits of my plan?
+      - How much do I pay monthly?
+      - What features are included in my plan?
+      - Am I eligible for an upgrade?
+      - Show me the details of my plan.
+      - What are the terms of my subscription?
+      - How many days are left in my plan?
+      - What exactly is included in my current plan?
+      - When does my plan expire?
+      - Do I have an active subscription?
+      - I’m not sure what plan I have — can you check?
+      - What plan am I currently on?
+      - What plan is active on my number?
+      - Do I have any active service right now?
+      - Can you tell me what I'm currently subscribed to?
+      - I want to verify the details of my active plan.
+      - Tell me what benefits are available with my current plan.
+      - What does my plan offer me?
+      - Can you provide information about my package?
+      - How do I find out what plan I’m on?
+      - Is there a validity period for my plan?
+      - I’d like to confirm the details of my data plan.
 
   - intent: cancel_service
     examples: |
@@ -196,18 +244,6 @@ nlu:
       - How do I fix my car?
       - What’s your favorite color?
 
-  - intent: enquire_available_plan
-    examples: |
-      - What plans are available?
-      - Show me the available plans.
-      - Which plans can I choose from?
-      - What options do you have?
-      - List all available plans.
-      - I’m thinking about switching to a different plan. Could you provide me with information on all the available options?
-      - What are the different plans you offer, and what are their features?
-      - Can you give me an overview of your current plans and their prices?
-      - I’m new to your service and want to know what plans are available for me.
-      - Tell me about the plans you have for families or multiple users.
 
   - intent: ask_bot_capabilities
     examples: |
@@ -222,17 +258,3 @@ nlu:
       - Tell me more about how you can help me with my account or service.
       - What kinds of tasks can you perform for me?
 
-  - intent: inquire_plan_details
-    examples: |
-      - What is my current plan?
-      - Can you tell me about my subscription?
-      - What are the benefits of my plan?
-      - How much do I pay monthly?
-      - What features are included in my plan?
-      - Am I eligible for an upgrade?
-      - Show me the details of my plan.
-      - What are the terms of my subscription?
-      - How many days are left in my plan?
-      - When does my plan expire?
-      - Do I have an active subscription?
-      - What plan am I currently on?

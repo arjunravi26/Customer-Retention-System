@@ -1,0 +1,21 @@
+# ───────────────────────────────────────
+# Core conversational model
+rasa>=3.6.0,<3.7.0
+
+# ───────────────────────────────────────
+# ML / NLP Dependencies
+tensorflow>=2.12.0,<2.13.0
+transformers==4.12.5
+spacy==3.7.2
+pydantic==1.10.9
+protobuf==4.23.3
+en_core_web_sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.7.1/en_core_web_sm-3.7.1-py3-none-any.whl
+
+# ───────────────────────────────────────
+# Core utilities
+scikit-learn>=0.22
+sqlalchemy==1.4.27
+psycopg2-binary==2.9.9
+uvicorn[standard]==0.17.6
+websockets==10.3
+python-dotenv==0.20.0

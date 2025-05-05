@@ -11,10 +11,8 @@ intents:
   - slow_internet
   - price_increase
   - current_offers
-  - complaint
   - cancel_service
   - fallback_intent
-  - enquire_available_plan
   - ask_bot_capabilities
   - inquire_plan_details
 
@@ -42,17 +40,11 @@ responses:
     - text: "I'm sorry you're experiencing slow internet. Please try restarting your device and checking your connections. If the issue persists, you may want to contact our technical support team."
     - text: "Slow internet can be frustrating. A good first step is to restart your device and modem. If that doesn't resolve it, please consider reaching out to our technical experts."
     - text: "I understand your concern about slow internet. Try rebooting your device and router. If the problem continues, our technical support team is available to help."
-    - text: "I see you're having issues with slow internet. Let me check if there are any known outages in your area."
 
   utter_price_increase:
     - text: "I understand your concern about the price increase. You can review your current plan and available options in our plans. For further details, please check your account information."
     - text: "Price adjustments can be confusing. Please refer to your plan details in our system for the most up-to-date information on rates and available plans."
     - text: "Thank you for reaching out about the price change. I recommend reviewing your current plan details in our database to better understand the adjustments."
-
-  utter_complaint:
-    - text: "I'm sorry to hear about your negative experience. While I can check your current plan details, please note that for specific issues, contacting our customer support directly might be the best option."
-    - text: "We take your feedback seriously. I recommend checking your account details for plan-related issues and then reaching out to our support team for further assistance."
-    - text: "Thank you for your feedback. For a detailed review of your concern, please contact our customer support department. Meanwhile, you can review your plan details in our system."
 
   utter_cancel_service:
     - text: "I'm sorry to hear you want to cancel your service. I can help review your current plan details. For cancellation requests, please contact our retention team directly."
@@ -66,8 +58,7 @@ responses:
     - text: "I'm sorry, I didn't understand. Could you please provide more information or select a topic related to your service plan?"
 
   utter_fallback:
-    - text: "I'm sorry, I don't understand that. Could you please rephrase? Here are some things I can help with: checking plans, reporting issues, or answering questions about your service."
-
+    - text: "I'm not sure I understood. Could you rephrase that?"
   utter_available_plan:
     - text: "These are the available plans: {available_plans}"
 
@@ -104,10 +95,9 @@ actions:
   - action_get_confidence
   - action_default_fallback
   - action_query_available_plan
-  - action_set_user_concern
   - utter_greet
   - action_user_plan
 
 session_config:
-  session_expiration_time: 60
+  session_expiration_time: 30
   carry_over_slots_to_new_session: true

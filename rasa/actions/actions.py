@@ -37,15 +37,6 @@ class ActionGetConfidence(Action):
         return [UserUtteranceReverted()]
 
 
-class ActionSetUserConcern(Action):
-    def name(self):
-        return "action_set_user_concern"
-
-    def run(self, dispatcher, tracker, domain):
-        concern = tracker.latest_message.get("text")
-        return [SlotSet("user_concern", concern)]
-
-
 def fetch_user_data(user_id):
     try:
         conn = psycopg2.connect(
@@ -86,6 +77,7 @@ class ActionCustomResponse(Action):
     def run(self, dispatcher, tracker, domain):
         user_id = tracker.sender_id
         print(user_id)
+        logging.info(f"Sender id is {user_id}")
         user_data = fetch_user_data(user_id)
         response = f"Hello {user_data['name']}, how can I assist you today?"
         dispatcher.utter_message(text=response)
@@ -95,7 +87,15 @@ class ActionUserPlan(Action):
     def name(self) -> Text:
         return "action_user_plan"
     def run(self, dispatcher, tracker, domain):
+        sender_id = tracker.sender_id
+        message = tracker.latest_message.get("text", "")
+        intent = tracker.latest_message.get("intent", {}).get("name", "")
+        entities = tracker.latest_message.get("entities", [])
+        logging.info(f"Payload received - sender_id: {sender_id}, message: {message}, intent: {intent}, entities: {entities}")
+
         user_id = tracker.sender_id
+        # dispatcher.utter_message(text=f"Fetching plan for user {user_id}")
+        logging.info(f"Sender id is {user_id}")
         try:
             conn = psycopg2.connect(
                 database="telcom",
@@ -107,14 +107,26 @@ class ActionUserPlan(Action):
             logging.info("Connected to PostgreSQL database successfully")
             query = f"SELECT plan_id from customer_plans where customer_id = %s"
             cursor = conn.cursor()
-            cursor.execute(query,user_id)
+            cursor.execute(query,(user_id,))
             plan_id = cursor.fetchone()
-            query = f"SELECT plan_id from telecom_plans where plan_id = {plan_id}"
+            logging.info(f"User plan id is {plan_id}")
+            query = f"SELECT  plan_name, monthly_fee, data_allowance_gb, voice_minutes, sms_allowance, description from telecom_plans where plan_id = %s"
             cursor = conn.cursor()
-            cursor.execute(query)
+            cursor.execute(query,(plan_id,))
             plan_details = cursor.fetchone()
-            logging.info(f"Result from the db about available plans: {plan_details}")
-            return plan_details
+            logging.info(f"Result from the db about user plan plans: {plan_details}")
+            if plan_details:
+                plan_name, monthly_fee, data_allowance, voice_minutes, sms_allowance, description = plan_details
+                response = (
+                    f"Your plan: {plan_name}\n"
+                    f"Monthly Fee: ${monthly_fee}\n"
+                    f"Data Allowance: {data_allowance} GB\n"
+                    f"Voice Minutes: {voice_minutes}\n"
+                    f"SMS Allowance: {sms_allowance}\n"
+                    f"Description: {description}"
+                )
+                logging.info(f"User plan details: {response}")
+                dispatcher.utter_message(text=response)
         except psycopg2.Error as e:
             logging.exception(
                 f"An error occurred while fetching available plans {e}")

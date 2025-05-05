@@ -9,10 +9,11 @@
 
 # Server which runs your custom actions.
 # https://rasa.com/docs/rasa/custom-actions
-
+tracker_store:
+  type: InMemoryTrackerStore
 action_endpoint:
   url: "http://localhost:5055/webhook"
-  request_timeout: 30
+  request_timeout: 60
 
 
 # Tracker store which is used to store the conversations.
@@ -44,4 +45,4 @@ action_endpoint:
 #  queue: queue
 
 rest:
-  timeout: 60
+  timeout: 120

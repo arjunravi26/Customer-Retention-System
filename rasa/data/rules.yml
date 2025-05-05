@@ -11,14 +11,14 @@ rules:
     - intent: bot_challenge
     - action: utter_iamabot
 
-- rule: Handle low confidence queries
+- rule: Handle low confidence and re-prompt
   steps:
     - intent: nlu_fallback
     - action: action_default_fallback
+    - action: utter_fallback
 
 - rule: Welcome the user at the start of the conversation
   conversation_start: true
   steps:
-  - intent: greet
-  - action: utter_greet
-
+    - intent: greet
+    - action: utter_greet

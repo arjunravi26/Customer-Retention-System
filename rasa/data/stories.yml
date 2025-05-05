@@ -1,6 +1,8 @@
 version: "3.1"
 
 stories:
+# ─────────────────────────────────────────────────────────
+# Mood-based paths
 - story: happy path
   steps:
     - intent: mood_great
@@ -22,36 +24,89 @@ stories:
     - intent: deny
     - action: utter_goodbye
 
-- story: slow internet followed by cancellation
+# ─────────────────────────────────────────────────────────
+# Slow internet report (added)
+- story: User reports slow internet
   steps:
     - intent: slow_internet
     - action: utter_slow_internet
+    - action: action_get_confidence
+
+# ─────────────────────────────────────────────────────────
+# Bot capability inquiry (added)
+- story: User asks bot capabilities
+  steps:
+    - intent: ask_bot_capabilities
+    - action: utter_bot_capabilities
+    - action: action_get_confidence
+
+# ─────────────────────────────────────────────────────────
+# Plan/offers related
+- story: inquire about current offers
+  steps:
+    - intent: current_offers
+    - action: action_query_available_plan
+    - action: action_get_confidence
+
+
+- story: User asks about plan details
+  steps:
+    - intent: inquire_plan_details
+    - action: action_user_plan
+    - action: action_get_confidence
+
+- story: User inquires about current offers and plan details
+  steps:
+    - intent: current_offers
+    - action: action_query_available_plan
+    - action: action_get_confidence
+    - intent: inquire_plan_details
+    - action: action_user_plan
+    - action: action_get_confidence
+
+
+# ─────────────────────────────────────────────────────────
+# Price increase paths
+- story: price increase
+  steps:
+    - intent: price_increase
+    - action: utter_price_increase
+
+- story: User asks about price increase and plan details
+  steps:
+    - intent: price_increase
+    - action: utter_price_increase
+    - intent: inquire_plan_details
+    - action: action_user_plan
+    - action: action_get_confidence
+
+# ─────────────────────────────────────────────────────────
+# Cancellation
+- story: cancel service
+  steps:
     - intent: cancel_service
     - action: utter_cancel_service
     - action: action_get_confidence
 
-- story: price increase followed by available plans
+- story: User wants to cancel service
   steps:
-    - intent: price_increase
-    - action: utter_price_increase
-    - intent: enquire_available_plan
-    - action: action_query_available_plan
-    - action: utter_available_plan
+    - intent: cancel_service
+    - action: utter_cancel_service
+    - action: action_get_confidence
 
-- story: complaint followed by bot capabilities
-  steps:
-    - intent: complaint
-    - action: utter_complaint
-    - intent: ask_bot_capabilities
-    - action: utter_bot_capabilities
-
+# ─────────────────────────────────────────────────────────
+# Fallbacks & recovery
 - story: fallback followed by valid intent
   steps:
     - intent: fallback_intent
     - action: action_default_fallback
     - action: utter_fallback
 
-- story: User asks about plan details
+- story: Fallback then valid intent recovery
   steps:
-  - intent: inquire_plan_details
-  - action: action_user_plan
+    - intent: fallback_intent
+    - action: action_default_fallback
+    - action: utter_fallback
+    - intent: current_offers
+    - action: action_query_available_plan
+    - action: action_get_confidence
