@@ -5,7 +5,7 @@
 
 ## Description
 
-Customer churn in telecom can erode revenue and escalate acquisition costs if not addressed early. This project delivers a compact, end-to-end retention toolkit that:
+Customer retention is a major challenge in the telecom industry, where customer churn directly impacts revenue. According to a Harvard Business Review study, retaining an existing customer is significantly more cost-effective than acquiring a new one. Inspired by this insight, this project aims to proactively prevent churn using a combination of machine learning, AI-driven personalization, and data visualization.
 
 - **Detects churn risk** ahead of time with a Linear Regression model trained on the IBM Telco dataset.
 - **Automates personalized offers** via an Agno AI agent that pulls a customer’s data, churn score and available promotions to craft and send tailored emails.
