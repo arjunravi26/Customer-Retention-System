@@ -61,7 +61,7 @@ rasa run --enable-api
 
 ## Usage
 
-### 1. Launch the Chatbot (User Side)
+### To run service(containers)
 
 ```bash
 docker-compose up --build
@@ -78,8 +78,6 @@ Contributions are welcome! To get started:
 3. Commit your changes: `git commit -m 'Add some feature'`
 4. Push to your branch: `git push origin feature/YourFeature`
 5. Open a Pull Request and describe your improvements.
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 
 ---
 
