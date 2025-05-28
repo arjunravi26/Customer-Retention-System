@@ -4,13 +4,17 @@
 ---
 
 ## Description
-The **Customer Retention System** is an end-to-end solution designed for the telecom industry to **retain high-value customers** by detecting churn risk and delivering tailored offers. Inspired by research showing that retaining existing customers is far less costly than acquiring new ones, this project combines:
 
-- **User-facing chatbot** (Rasa) for handling FAQs and basic support
-- **Churn prediction** (Linear Regression on IBM Telco dataset)
-- **AI-powered offer generation** (Agno agent)
-- **Interactive visualizations** (Tableau dashboard)
-- **Topic modeling** (NMF on chat logs)
+Customer churn in telecom can erode revenue and escalate acquisition costs if not addressed early. This project delivers a compact, end-to-end retention toolkit that:
+
+- **Detects churn risk** ahead of time with a Linear Regression model trained on the IBM Telco dataset.
+- **Automates personalized offers** via an Agno AI agent that pulls a customer’s data, churn score and available promotions to craft and send tailored emails.
+- **Visualizes customer insights** in a Tableau dashboard—demographics, usage patterns, churn trends—so admins spot issues and opportunities at a glance.
+- **Surfaces common pain points** through NMF topic modeling on Rasa chatbot logs, helps to identify customer need and problems.
+- **Helps customers** directly with a Rasa chatbot for quick answers about service issues and know about offers.
+
+Together, these components turn raw data into proactive retention actions—keeping customers engaged before they consider leaving.
+
 
 ---
 
