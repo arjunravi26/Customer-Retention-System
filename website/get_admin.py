@@ -1,7 +1,7 @@
 import psycopg2
 from psycopg2 import OperationalError, DatabaseError
 from typing import List, Tuple
-from .logger import logging
+from logger import logging
 
 
 def get_admin() -> List[Tuple[str]]:
@@ -21,7 +21,7 @@ def get_admin() -> List[Tuple[str]]:
             database="telcom",
             user="postgres",
             password="postgres",
-            host="localhost",
+            host="postgres",
             port="5432"
         ) as conn:
             logging.info("Connected to PostgreSQL successfully.")

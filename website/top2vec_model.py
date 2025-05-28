@@ -1,10 +1,11 @@
 import requests
 import json
-from .data import fetch_data
-from .logger import logging
+from data import fetch_data
+from logger import logging
+from config import get_service_url
 def send_documents(documents):
     """Send documents to the API for topic modeling."""
-    url = "http://localhost:8005/process"
+    url = get_service_url('topic_modeling_process')
     payload = {"documents": documents}
     try:
         response = requests.post(url, json=payload)
@@ -17,7 +18,7 @@ def send_documents(documents):
 
 def receive_topics():
     """Retrieve topics from the API."""
-    url = "http://localhost:8005/topics"
+    url = get_service_url('topic_modeling_topic')
     try:
         response = requests.get(url)
         response.raise_for_status()
@@ -27,9 +28,9 @@ def receive_topics():
         logging.info("Topics: ")
 
         for topic in topics:
-            print(f"- {topic['topic_name']}: {topic['description']} (Frequency: {topic['frequency']}")
-            logging.info(f"- {topic['topic_name']}: {topic['description']} (Frequency: {topic['frequency']})")
-        return topics[:8]
+            print(f"- {topic['topic_name']}: {topic['description']}")
+            logging.info(f"- {topic['topic_name']}: {topic['description']} (Frequency: {topic['top_words']})")
+        return topics[:10]
     except requests.RequestException as e:
         logging.info(f"Error retrieving topics: {str(e)}")
         print(f"Error retrieving topics: {str(e)}")

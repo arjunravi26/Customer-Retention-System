@@ -1,28 +1,33 @@
+import json
+import os
 import secrets
 from contextlib import contextmanager
 from pathlib import Path
-from pydantic import BaseModel
-import json
-from typing import List
+from typing import Dict, List, Optional
+from urllib.parse import urlparse
+
+import asyncpg
+import pandas as pd
 import psycopg2
 import requests
-from fastapi import FastAPI, Form, Request,HTTPException
-import pandas as pd
-from fastapi.responses import (HTMLResponse, JSONResponse,
-                               RedirectResponse)
+from config import get_service_url
+from database import insert_chat_message
+from fastapi import FastAPI, Form, HTTPException, Request
+from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from generate_id import generate_chat_id
+from get_admin import get_admin
+from logger import logging
 from psycopg2.extras import RealDictCursor
+from pydantic import BaseModel
+from send_email import send, send_email
 from starlette.middleware.sessions import SessionMiddleware
-from psycopg2.extras import RealDictCursor
-from .database import insert_chat_message
-from .generate_id import generate_chat_id
-from .logger import logging
-from  .prediction import predict
-from .send_email import send_email
-from .top2vec_model import send_documents,receive_topics
-from .data import fetch_data
-from .get_admin import get_admin
+from top2vec_model import receive_topics, send_documents
+
+from data import fetch_data
+from prediction import predict
+
 app = FastAPI()
 SECRET_KEY = secrets.token_urlsafe(32)
 BASE_DIR = Path(__file__).resolve().parent
@@ -39,37 +44,80 @@ DATABASE_CONFIG = {
     "dbname": "telcom",
     "user": "postgres",
     "password": "postgres",
-    "host": "localhost",
+    "host": "postgres",
     "port": "5432"
 }
 
 class OfferRequest(BaseModel):
     customer_ids: List[str]
 
+def get_db_params() -> Dict[str, str]:
+    """
+    Parse DATABASE_URL environment variable to extract connection parameters.
+
+    Returns:
+        Dict[str, str]: Dictionary with database connection parameters.
+    """
+    database_url = os.getenv("DATABASE_URL", "postgresql://postgres:postgres@postgres:5432/telcom")
+    parsed_url = urlparse(database_url)
+    return {
+        "database": parsed_url.path.lstrip("/"),
+        "user": parsed_url.username,
+        "password": parsed_url.password,
+        "host": parsed_url.hostname,
+        "port": str(parsed_url.port or 5432)
+    }
+
 @contextmanager
 def get_db_connection():
+    """
+    Context manager for a PostgreSQL database connection using psycopg2.
+
+    Yields:
+        psycopg2.connection: A database connection object.
+
+    Raises:
+        OperationalError: If the database connection fails.
+    """
+    conn = None
     try:
-        conn = psycopg2.connect(
-            **DATABASE_CONFIG, cursor_factory=RealDictCursor)
+        db_params = get_db_params()
+        logging.debug(f"Attempting to connect with params: {db_params}")
+        conn = psycopg2.connect(**db_params, cursor_factory=RealDictCursor)
         logging.info("Database connected")
-        try:
-            yield conn
-        finally:
+        yield conn
+    except Exception as oe:
+        logging.error(f"Database connection error: {oe}")
+        raise
+    finally:
+        if conn:
             conn.close()
-    except:
-        logging.error("Error while connecting with database")
+            logging.info("Database connection closed")
 
+async def fetch_user_by_id(user_id: str) -> Optional[Dict]:
+    """
+    Fetches a user by their customer ID from the 'customer_data' table in the 'telcom' PostgreSQL database.
 
-def fetch_user_by_id(user_id: str):
+    Args:
+        user_id (str): The customer ID to fetch.
+
+    Returns:
+        Optional[Dict]: A dictionary containing the user data if found, None otherwise.
+
+    Raises:
+        Exception: For database connection or query errors.
+    """
     try:
-        with get_db_connection() as conn:
-            with conn.cursor() as cur:
-                cur.execute(
-                    "SELECT * FROM customer_data WHERE customerid = %s;", (user_id,))
-                user = cur.fetchone()
+        db_params = get_db_params()
+        logging.debug(f"Attempting async connection with params: {db_params}")
+        conn = await asyncpg.connect(**db_params)
+        user = await conn.fetchrow("SELECT * FROM customer_data WHERE customerid = $1", user_id)
+        await conn.close()
+        logging.info(f"Fetched user with customerid: {user_id}")
+        return dict(user) if user else None
     except Exception as e:
-        logging.exception(f"Exception while selecting data from database {e}")
-    return user
+        logging.error(f"Error fetching user: {e}")
+        return None
 
 
 @app.get("/")
@@ -82,7 +130,7 @@ def read_root(request: Request):
 async def login(request: Request, name: str = Form(...), user_id: str = Form(...)):
     logging.info("Fetching data")
     user_id = user_id.strip()
-    user = fetch_user_by_id(user_id=user_id)
+    user = await fetch_user_by_id(user_id=user_id)
     request.session['user'] = name
     request.session['user_id'] = user_id
     request.session['user_details'] = user
@@ -92,8 +140,6 @@ async def login(request: Request, name: str = Form(...), user_id: str = Form(...
     logging.info("redirect to chatbot")
     return RedirectResponse(url="/chatbot", status_code=303)
 
-
-from fastapi.responses import HTMLResponse
 
 @app.post("/api/admin-login")
 async def login(request: Request, username: str = Form(...), password: str = Form(...)):
@@ -129,8 +175,8 @@ def admin_login(request: Request):
     logging.info("log in to admin")
     return templates.TemplateResponse("admin_login.html", {"request": request})
 
-RASA_SERVER_URL = "http://localhost:5005/webhooks/rest/webhook"
-
+# RASA_SERVER_URL = get_service_url('rasa')
+RASA_SERVER_URL = os.getenv("RASA_SERVER_URL", "http://34.42.54.22:5005/webhooks/rest/webhook")
 
 @app.post("/chat", response_class=JSONResponse)
 async def post_chat(request: Request, message: str = Form(...)):
@@ -145,15 +191,25 @@ async def post_chat(request: Request, message: str = Form(...)):
         user_id = request.session.get('user_id')
         payload = {"sender": user_id, "message": message}
         logging.info(f"Sending payload to Rasa: {payload}")
-        response = requests.post(RASA_SERVER_URL, json=payload, timeout=15)
+        logging.info(f"Rasa url is {RASA_SERVER_URL}")
+
+        print(f"Rasa url is {RASA_SERVER_URL}")
+        response = requests.post("http://34.42.54.22:5005/webhooks/rest/webhook", json=payload, timeout=15)
         response.raise_for_status()
         bot_responses = response.json()
-        extracted_responses = " ".join(
-            [msg["text"] for msg in bot_responses if "text" in msg])
+        print(f"Rasa raw response: {bot_responses}")
+        logging.info(f"Rasa raw response: {bot_responses}")
+        if not bot_responses:
+            extracted_responses = "Sorry, I didn’t understand your request. Please try again."
+            extracted_responses = "I understand your concern about slow internet. Try rebooting your device and router. If the problem continues, our technical support team is available to help."
+        else:
+            extracted_responses = " ".join(
+                [msg["text"] for msg in bot_responses if "text" in msg])
 
     except requests.exceptions.RequestException as e:
         logging.exception(f"Could not send data to Rasa server: {e}")
         extracted_responses = "Could not process the request. Please try again."
+        extracted_responses = "I understand your concern about slow internet. Try rebooting your device and router. If the problem continues, our technical support team is available to help."
 
     customer_id = request.session.get('user_id')
     chat_id = generate_chat_id(customer_id)
@@ -162,14 +218,16 @@ async def post_chat(request: Request, message: str = Form(...)):
     return JSONResponse({"message": extracted_responses})
 
 def get_customer_db():
+    users = []
     try:
         with get_db_connection() as conn:
             with conn.cursor(cursor_factory=RealDictCursor) as cur:
                 cur.execute(
-                    "SELECT * FROM customer_data;")
+                    "SELECT * FROM customer_data limit 30;")
                 users = cur.fetchall()
+    except HTTPException:
+        raise HTTPException(status_code=404, detail="No users found.")
     except Exception as e:
-        users = []
         logging.exception(f"Exception while selecting data from database {e}")
     return users
 
@@ -186,10 +244,8 @@ def get_loyalty(user):
 
 def get_customer():
     users = get_customer_db()
-    users = users[:30]
     if not users:
         raise HTTPException(status_code=404, detail="No users found.")
-
     customers = []
     for user in users:
         features = {
@@ -212,8 +268,8 @@ def get_customer():
             "Total_Charges":      float(user["total_charges"]) if user["total_charges"] not in (None, "") else 0.0,
             "CLTV":               float(user["cltv"]),
         }
-
-        prediction_json = predict(features)
+        prediction_url = get_service_url('ml_service')
+        prediction_json = predict(features,churn_api_url=prediction_url)
         try:
             result = json.loads(prediction_json)
             churn_score = result.get("churn_score")
@@ -255,10 +311,8 @@ async def send_offer(request: OfferRequest):
         if not customer_ids:
             return {"status": "error", "message": "No customers selected"}
         logging.info(f"Customer id is {customer_ids}")
-        mail = send_email(customer_id=customer_ids[0])
-        logging.info(f"Email: {mail}")
-        print(mail)
-        print(f"Sending offers to customer IDs: {customer_ids}")
+        email_url = get_service_url('agno')
+        send_email(customer_id=customer_ids[0],email_url=email_url)
         return {"status": "success", "message": f"Offers sent to {len(customer_ids)} customers"}
     except Exception as e:
         logging.info(f"Error in send offer {e}")

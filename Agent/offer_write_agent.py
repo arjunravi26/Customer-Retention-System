@@ -4,11 +4,11 @@ import json
 from dotenv import load_dotenv
 from agno.agent import Agent
 from agno.models.groq import Groq
-from Agent.tools.customer_analysis_tool import AnalyzeCustomerTool
-from Agent.tools.available_offer_tool import GetAvailableOffersTool
-from Agent.tools.customer_data_tool import CustomeData
-from Agent.tools.prediction_tool import ChurnPredictionTool
-from Agent.logger import logging
+from tools.customer_analysis_tool import AnalyzeCustomerTool
+from tools.available_offer_tool import GetAvailableOffersTool
+from tools.customer_data_tool import CustomeData
+from tools.prediction_tool import ChurnPredictionTool
+from logger import logging
 
 load_dotenv(dotenv_path='agent/.env')
 groq_api_key = os.getenv('GROQ_API_KEY')
@@ -44,7 +44,7 @@ def generate_offer_letter(customer_id: str) -> dict:
 
     analyze_tool = AnalyzeCustomerTool()
     offers_tool = GetAvailableOffersTool()
-    churn_score_tool = ChurnPredictionTool(api_url="http://127.0.0.1:8001/predict_churn")
+    churn_score_tool = ChurnPredictionTool(api_url="http://ml_service:8003/predict_churn")
 
     write_agent = Agent(
         model=Groq(api_key=groq_api_key),

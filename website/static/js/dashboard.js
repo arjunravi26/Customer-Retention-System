@@ -210,12 +210,11 @@ function renderTopics(topics) {
         card.innerHTML = `
             <h3 class="text-lg font-semibold text-gray-800">${topic.topic_name}</h3>
             <p class="text-gray-600">${topic.description}</p>
-            <p class="text-sm text-gray-500 mt-2">Frequency: ${topic.frequency}</p>
         `;
         container.appendChild(card);
     });
 }
-
+// <p class="text-sm text-gray-500 mt-2">Frequency: ${topic.frequency}</p>
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     initTableau();

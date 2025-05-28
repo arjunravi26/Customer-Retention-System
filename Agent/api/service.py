@@ -1,8 +1,8 @@
 # main.py
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from Agent.offer_write_agent import generate_offer_letter
-from Agent.logger import logging
+from offer_write_agent import generate_offer_letter
+from logger import logging
 app = FastAPI(title="Customer Retention API", description="API to generate personalized retention offer letters", version="1.0.0")
 
 class CustomerRequest(BaseModel):

@@ -31,7 +31,7 @@ class RetrieveLastChatTool(Toolkit):
                 database="telcom",
                 user="postgres",
                 password="postgres",
-                host="localhost",
+                host="postgres",
                 port="5432"
             )
             print(f"Connected to PostgreSQL for retrieving last chat for customer: {self.customer_id}")

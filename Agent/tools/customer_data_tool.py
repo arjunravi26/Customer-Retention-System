@@ -20,7 +20,7 @@ class CustomeData(Toolkit):
                  Example: '{"CustomerID": "123", "TenureMonths": 24, "MonthlyCharges": 95.0, ...}'
                  Returns '{}' if no customer data is found for the given ID.
 
-   
+
         """
         conn = None
         cursor = None
@@ -29,7 +29,7 @@ class CustomeData(Toolkit):
                 database="telcom",
                 user="postgres",
                 password="postgres",
-                host="localhost",
+                host="postgres",
                 port="5432"
             )
             print("Connected to PostgreSQL database successfully for fetching customer data.")

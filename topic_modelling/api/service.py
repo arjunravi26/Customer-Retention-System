@@ -3,7 +3,7 @@ from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Dict, Any
 from pydantic import BaseModel
-from topic_modeling import TextPreprocessor, TopicModelingPipeline
+from nmf import TextPreprocessor, TopicModelingPipeline
 from logger import logging
 app = FastAPI(title="Top2Vec Topic Modeling API")
 
@@ -54,8 +54,8 @@ async def process_documents(input_data: DocumentInput):
 
         _, cleaned = preprocessor.preprocess(documents)
 
-        model = pipeline.fit_top2vec(cleaned)
-        results = pipeline.get_top2vec_results(model, cleaned)
+        model = pipeline.fit_nmf(cleaned)
+        results = pipeline.get_nmf_results()
         logging.info("Topic modeling completed")
         return {"status": "success", "message": "Topic modeling completed"}
     except Exception as e:

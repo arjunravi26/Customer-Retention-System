@@ -2,7 +2,7 @@ import requests
 import json
 
 
-def predict(customer_data, churn_api_url="http://127.0.0.1:8001/predict_churn"):
+def predict(customer_data, churn_api_url="http://ml_service/predict_churn"):
     try:
         headers = {'Content-Type': 'application/json'}
         response = requests.post(

@@ -1,0 +1,40 @@
+# Rasa-specific
+*.json.gz
+*.tar.gz
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+
+# Environment files
+.env
+.env.*
+
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+
+# OS/editor files
+.DS_Store
+.idea/
+.vscode/
+*.bak
+
+# Git
+.git
+.gitignore
+
+# Jupyter (optional)
+*.ipynb
+
+
+# Docker
+docker-compose.override.yml
+
+# Virtual environments
+venv/
+.venv/

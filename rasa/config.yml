@@ -26,7 +26,7 @@ pipeline:
     model_weights: "distilbert-base-uncased"
 
   # ---- Sparse featurizers for patterns & typos ----
-  - name: RegexFeaturizer
+  # - name: RegexFeaturizer
   - name: CountVectorsFeaturizer           # word n-grams
   - name: CountVectorsFeaturizer           # char n-grams for misspellings
     analyzer: char_wb
@@ -40,8 +40,8 @@ pipeline:
 
   # ---- Post‑processing & fallback ----
   - name: EntitySynonymMapper
-  - name: ResponseSelector
-    epochs: 100
+  # - name: ResponseSelector
+  #   epochs: 100
   - name: FallbackClassifier
     threshold: 0.4
     ambiguity_threshold: 0.05

@@ -20,3 +20,4 @@ packaging==24.1
 pygments==2.18.0
 setuptools==75.1.0
 cython==3.0.11
+PyYAML

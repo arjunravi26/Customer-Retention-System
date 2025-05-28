@@ -1,5 +1,8 @@
+import os
 import psycopg2
-
+from psycopg2 import OperationalError, DatabaseError
+from urllib.parse import urlparse
+from logger import logging
 
 def insert_chat_message(chat_id: str, customer_id: str, sender: str, message_content: str) -> bool:
     """
@@ -13,17 +16,30 @@ def insert_chat_message(chat_id: str, customer_id: str, sender: str, message_con
 
     Returns:
         bool: True if the message was inserted successfully, False otherwise.
+
+    Raises:
+        OperationalError: If the database connection fails.
+        DatabaseError: If the SQL execution fails.
+        Exception: For any other unexpected errors.
     """
     conn = None
     cursor = None
     try:
-        conn = psycopg2.connect(
-            database="telcom",
-            user="postgres",
-            password="postgres",
-            host="localhost",
-            port="5432"
-        )
+        # Get DATABASE_URL from environment variable
+        database_url = os.getenv("DATABASE_URL", "postgresql://postgres:postgres@postgres:5432/telcom")
+        parsed_url = urlparse(database_url)
+
+        # Extract connection parameters
+        db_params = {
+            "database": parsed_url.path.lstrip("/"),
+            "user": parsed_url.username,
+            "password": parsed_url.password,
+            "host": parsed_url.hostname,
+            "port": parsed_url.port or 5432
+        }
+
+        logging.debug(f"Attempting to connect with params: {db_params}")
+        conn = psycopg2.connect(**db_params)
         cursor = conn.cursor()
 
         query = """
@@ -32,13 +48,23 @@ def insert_chat_message(chat_id: str, customer_id: str, sender: str, message_con
         """
         cursor.execute(query, (chat_id, customer_id, sender, message_content))
         conn.commit()
-        print(f"Message inserted successfully into chat ID: {chat_id}, customer ID: {customer_id}, sender: {sender}")
+        logging.info(f"Message inserted successfully into chat ID: {chat_id}, customer ID: {customer_id}, sender: {sender}")
         return True
 
-    except psycopg2.Error as e:
-        print(f"Error inserting message into PostgreSQL database: {e}")
+    except OperationalError as oe:
+        logging.error(f"Database connection error: {oe}")
+        return False
+
+    except DatabaseError as de:
+        logging.error(f"SQL query execution error: {de}")
         if conn:
-            conn.rollback()  # Rollback the transaction in case of an error
+            conn.rollback()
+        return False
+
+    except Exception as e:
+        logging.error(f"Unexpected error: {e}")
+        if conn:
+            conn.rollback()
         return False
 
     finally:
@@ -46,11 +72,11 @@ def insert_chat_message(chat_id: str, customer_id: str, sender: str, message_con
             cursor.close()
         if conn:
             conn.close()
-            print("Connection to PostgreSQL closed after attempting to insert message.")
+            logging.info("Connection to PostgreSQL closed after attempting to insert message.")
 
 if __name__ == '__main__':
     # Example usage:
-    chat_id_example = "user123_20250407152500_abc123"  # Replace with an actual chat ID
+    chat_id_example = "user123_20250407152500_abc123"
     customer_id_example = "user123"
     user_message = "Hello, I have a question about my bill."
     chatbot_response = "Hi there! I'd be happy to help. What's your question?"
@@ -67,7 +93,7 @@ if __name__ == '__main__':
     else:
         print("Failed to insert chatbot response.")
 
-    # You can also try inserting with a different chat ID for the same customer
+    # Insert with a different chat ID
     chat_id_example_2 = "user123_20250407153000_def456"
     user_message_2 = "Thank you!"
     if insert_chat_message(chat_id_example_2, customer_id_example, "user", user_message_2):

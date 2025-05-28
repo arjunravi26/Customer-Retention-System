@@ -1,7 +1,11 @@
 import psycopg2
 from psycopg2 import OperationalError, DatabaseError
 from typing import List, Tuple
-from .logger import logging
+import os
+import psycopg2
+from psycopg2 import OperationalError, DatabaseError
+from urllib.parse import urlparse
+from logger import logging
 
 
 def fetch_data() -> List[Tuple[str]]:
@@ -17,23 +21,29 @@ def fetch_data() -> List[Tuple[str]]:
         Exception: For any other unexpected errors.
     """
     try:
-        with psycopg2.connect(
-            database="telcom",
-            user="postgres",
-            password="postgres",
-            host="localhost",
-            port="5432"
-        ) as conn:
-            logging.info("Connected to PostgreSQL successfully.")
+        database_url = os.getenv("DATABASE_URL", "postgresql://postgres:postgres@postgres:5432/telcom")
+        parsed_url = urlparse(database_url)
 
-            with conn.cursor() as cursor:
-                query: str = "SELECT message_content FROM customer_chat WHERE sender = 'user'"
-                cursor.execute(query)
-                results: List[Tuple[str]] = cursor.fetchall()
-                logging.info(
-                    f"Fetched {len(results)} rows from customer_chat.")
-                chats = [doc[0] for doc in results]
-                return chats
+        # Extract connection parameters
+        db_params = {
+            "database": parsed_url.path.lstrip("/"),
+            "user": parsed_url.username,
+            "password": parsed_url.password,
+            "host": parsed_url.hostname,
+            "port": parsed_url.port or 5432
+        }
+
+        logging.debug(f"Attempting to connect with params: {db_params}")
+        conn = psycopg2.connect(**db_params)
+        cursor = conn.cursor()
+
+        query: str = "SELECT message_content FROM customer_chat WHERE sender = 'user'"
+        cursor.execute(query)
+        results: List[Tuple[str]] = cursor.fetchall()
+        logging.info(
+            f"Fetched {len(results)} rows from customer_chat.")
+        chats = [doc[0] for doc in results]
+        return chats
 
     except OperationalError as oe:
         logging.error(f"Database connection error: {oe}")

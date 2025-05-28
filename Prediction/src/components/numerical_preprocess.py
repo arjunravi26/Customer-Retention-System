@@ -221,9 +221,9 @@ if __name__ == "__main__":
     # # Train model
     # model = LogisticRegression()
     # model.fit(X_train_transformed, y_train)
-    model_trainer = ModelTrainer('config.yaml')
-    model_trainer.fit(X_train_transformed,y_train)
-    model_trainer.transform(X_train_transformed,y_train)
+    # model_trainer = ModelTrainer('config.yaml')
+    # model_trainer.fit(X_train_transformed,y_train)
+    # model_trainer.transform(X_train_transformed,y_train)
 
     # Save preprocessors and model
     joblib.dump(cat_preprocessor, 'models/categorical_preprocessor.joblib')

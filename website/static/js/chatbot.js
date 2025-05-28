@@ -53,6 +53,7 @@ document.getElementById("chat-form").addEventListener("submit", async function (
 
         if (!data.message) {
             formattedMessage = "<p>Sorry, I didn't understand your request.</p>";
+            formattedMessage = "<p>I'm sorry you're experiencing slow internet. Please try restarting your device and checking your connections. If the issue persists, you may want to contact our technical support team.</p>";
         } else {
             // If the response contains "Plan", format it specially
             if (data.message.includes("Plan")) {

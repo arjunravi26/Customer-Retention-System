@@ -69,7 +69,6 @@ class CategoricalPreprocessor(BaseEstimator, TransformerMixin):
                 self.label_encoder.fit(X['Gender'])
             else:
                 logging.warning("'Gender' column not found in input data.")
-                print("'Gender' column not found in input data.")
 
             # Fit target encodings
             if y is not None:
@@ -82,7 +81,6 @@ class CategoricalPreprocessor(BaseEstimator, TransformerMixin):
                         self.target_encodings[col] = encoding
                     else:
                         logging.warning(f"Target encoding column {col} not found in input data.")
-                        print(f"Target encoding column {col} not found in input data.")
 
             # Fit OneHotEncoder for one-hot encoded columns
             for col in self.onehot_cols:
@@ -95,12 +93,10 @@ class CategoricalPreprocessor(BaseEstimator, TransformerMixin):
                     print(f"One-hot encoding column {col} not found in input data.")
 
             logging.info("Categorical Preprocessing fitting done.")
-            print("Categorical Preprocessing fitting done.")
             return self
 
         except Exception as e:
             logging.error(f"Error in Preprocessor fit: {str(e)}")
-            print(f"Error in Preprocessor fit: {str(e)}")
             raise RuntimeError(f"Error in Preprocessor fit: {str(e)}")
 
     def transform(self, X: pd.DataFrame) -> pd.DataFrame:
@@ -112,19 +108,15 @@ class CategoricalPreprocessor(BaseEstimator, TransformerMixin):
         Returns:
             pd.DataFrame: Transformed features.
         """
-        print("Transform method in Categorical Preprocessing")
-        print(self.target_encode_cols)
         try:
             logging.info("Categorical Preprocessing transform started...")
             X_transformed: pd.DataFrame = X.copy()
-            print("categorical")
 
             # Apply LabelEncoder for 'Gender'
             if 'Gender' in X_transformed.columns:
                 X_transformed['Gender'] = self.label_encoder.transform(X_transformed['Gender'])
             else:
                 logging.warning("'Gender' column not found during transform.")
-                print("'Gender' column not found during transform.")
 
             # Apply binary mappings
             for col, mapping in self.binary_map_cols.items():
@@ -135,11 +127,8 @@ class CategoricalPreprocessor(BaseEstimator, TransformerMixin):
                         X_transformed[col].fillna(0, inplace=True)  # Default to 0 for unknown
                 else:
                     logging.warning(f"Binary mapping column {col} not found in input data.")
-                    print(f"Binary mapping column {col} not found in input data.")
 
             # Apply target encodings
-            print(X_transformed)
-            print(f"Target Columns: {self.target_encode_cols}")
             for col in self.target_encode_cols:
                 if col in X_transformed.columns:
                     if col in self.target_encodings:
@@ -175,7 +164,6 @@ class CategoricalPreprocessor(BaseEstimator, TransformerMixin):
                     logging.warning(f"One-hot encoding column {col} not found in input data.")
 
             logging.info("Categorical Preprocessing transform done.")
-            print(X_transformed)
             return X_transformed
 
         except Exception as e:
@@ -199,9 +187,7 @@ class CategoricalPreprocessor(BaseEstimator, TransformerMixin):
 
 if __name__ == "__main__":
     preprocessor_path = "models/categorical_preprocessor.joblib"
-    print(preprocessor_path)
     preprocessor = joblib.load(preprocessor_path)
-    print(preprocessor)
 
 # if __name__ == "__main__":
 #     from src.pipeline.data_pipeline import DataLoadSplitPipeline

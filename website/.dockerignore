@@ -1,0 +1,33 @@
+# Python virtual environment
+venv/
+.env
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Logs and temporary files
+logs/
+*.log
+
+# Git repository and related files
+.git/
+.gitignore
+
+# Docker-specific files
+.dockerignore
+
+# Test and documentation files
+tests/
+docs/
+
+# FastAPI static or template directories (if not needed in image)
+# static/
+# templates/
+
+# Miscellaneous
+*.bak
+*.swp
+.DS_Store

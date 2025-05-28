@@ -76,7 +76,6 @@ class ActionCustomResponse(Action):
 
     def run(self, dispatcher, tracker, domain):
         user_id = tracker.sender_id
-        print(user_id)
         logging.info(f"Sender id is {user_id}")
         user_data = fetch_user_data(user_id)
         response = f"Hello {user_data['name']}, how can I assist you today?"

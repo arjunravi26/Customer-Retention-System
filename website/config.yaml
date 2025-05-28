@@ -1,2 +1,23 @@
-sentimental_model:
-  - sentiment-analysis
+services:
+  web:
+    url: "http://web:8000"
+  agno:
+    url: "http://agno:8002/generate_offer"
+  ml_service:
+    url: "http://ml_service:8003/predict_churn"
+  topic_modeling_process:
+    url: "http://topic_modeling:8004/process"
+  topic_modeling_topic:
+    url: "http://topic_modeling:8004/topics"
+  rasa:
+    # url: "http://34.42.23.139:5055/webhook"
+    # url: "http://rasa:5005/webhooks/rest/webhook"
+    url: "http://34.42.54.22:5005/webhooks/rest/webhook"
+
+
+DATABASE_CONFIG:
+  "dbname": "telcom"
+  "user": "postgres"
+  "password": "postgres"
+  "host": "postgres"
+  "port": "5432"

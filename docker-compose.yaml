@@ -1,0 +1,153 @@
+# services:
+#     web:
+#         build:
+#             context: website
+#             dockerfile: Dockerfile
+#         ports:
+#             - "8000:8000"
+#         env_file:
+#             - .env
+#         environment:
+#             - PASSWORD=${PASSWORD}
+#             - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/telcom
+#         depends_on:
+#             - postgres
+#         networks:
+#             - app-network
+#         volumes:
+#             - ./:/app
+#     postgres:
+#         image: postgres:latest
+#         environment:
+#             - POSTGRES_USER=postgres
+#             - POSTGRES_PASSWORD=postgres
+#             - POSTGRES_DB=telcom
+#         volumes:
+#             - pgdata:/var/lib/postgresql/data
+#             - ./postgres-init:/docker-entrypoint-initdb.d
+#         networks:
+#             - app-network
+#     rasa:
+#         build:
+#             context: rasa
+#             dockerfile: Dockerfile
+#         ports:
+#             - "5005:5005"
+#             - "5055:5055"
+#         depends_on:
+#             - web
+#         networks:
+#             - app-network
+
+#     agno:
+#         build:
+#             context: Agent
+#             dockerfile: Dockerfile
+#         ports:
+#             - "8002:8002"
+#         env_file:
+#             - .env
+#         environment:
+#             - HF_TOKEN=${HF_TOKEN}
+#             - GROQ_API_KEY=${GROQ_API_KEY}
+#         networks:
+#             - app-network
+
+#     ml_service:
+#         build:
+#             context: Prediction
+#             dockerfile: Dockerfile
+#         ports:
+#             - "8003:8003"
+#         networks:
+#             - app-network
+#     topic_modeling:
+#         build:
+#             context: topic_modelling
+#             dockerfile: Dockerfile
+#         ports:
+#             - "8004:8004"
+#         networks:
+#             - app-network
+# volumes:
+#     pgdata:
+
+# networks:
+#     app-network:
+#         driver: bridge
+
+services:
+    web:
+        image: arjun726i/customer-retention-system-web:latest
+        ports:
+            - "8000:8000"
+        env_file:
+            - .env
+        environment:
+            - RASA_SERVER_URL=http://34.42.54.22:5005/webhooks/rest/webhook
+            - PASSWORD=${PASSWORD}
+            - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/telcom
+        depends_on:
+            - postgres
+        networks:
+            - app-network
+        volumes:
+            - ./:/app
+
+    postgres:
+        image: postgres:latest
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+            - POSTGRES_DB=telcom
+        volumes:
+            - pgdata:/var/lib/postgresql/data
+            - ./postgres-init:/docker-entrypoint-initdb.d
+        networks:
+            - app-network
+
+    rasa:
+        image: arjun726i/customer-retention-system-rasa:latest
+        ports:
+            - "5005:5005"
+            - "5055:5055"
+        depends_on:
+            - web
+        networks:
+            - app-network
+
+    agno:
+        image: arjun726i/customer-retention-system-agno:latest
+        ports:
+            - "8002:8002"
+        env_file:
+            - .env
+        environment:
+            - HF_TOKEN=${HF_TOKEN}
+            - GROQ_API_KEY=${GROQ_API_KEY}
+        networks:
+            - app-network
+
+    ml_service:
+        image: arjun726i/customer-retention-system-ml_service:latest
+        ports:
+            - "8003:8003"
+        networks:
+            - app-network
+
+    topic_modeling:
+        image: arjun726i/customer-retention-system-topic_modeling:latest
+        ports:
+            - "8004:8004"
+        networks:
+            - app-network
+        volumes:
+            - ./persistent_data:/opt/conda
+
+volumes:
+    pgdata:
+
+
+networks:
+    app-network:
+        driver: bridge

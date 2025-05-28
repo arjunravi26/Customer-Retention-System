@@ -8,7 +8,7 @@ from agno.tools.toolkit import Toolkit
 class ChurnPredictionTool(Toolkit):
     """A tool for predicting customer churn score using an external API service."""
 
-    def __init__(self, api_url: str = "http://127.0.0.1:8000/predict_churn"):
+    def __init__(self, api_url: str = "http://ml_service:8003/predict_churn"):
         """
         Initializes the ChurnPredictionTool.
 
