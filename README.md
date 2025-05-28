@@ -1,4 +1,3 @@
-````markdown
 # Customer Retention System for Telecom Industry
 *Proactively reduce customer churn with AI-driven personalized offers*
 
